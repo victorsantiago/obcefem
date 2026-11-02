@@ -284,9 +284,9 @@
   .faixa-mineracao::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
     background: linear-gradient(180deg, rgba(16,22,19,.55) 0%, rgba(16,22,19,.25) 50%, rgba(16,22,19,.55) 100%); }
   .faixa-mineracao-conteudo { padding-top: 120px; padding-bottom: 120px; }
-  .faixa-mineracao .vale { background: rgba(232,244,239,.93); border-color: rgba(255,255,255,.6); box-shadow: 0 24px 60px rgba(0,0,0,.28);
+  .faixa-mineracao .vale { padding: 30px 44px; gap: 40px; background: rgba(232,244,239,.93); border-color: rgba(255,255,255,.6); box-shadow: 0 24px 60px rgba(0,0,0,.28);
     -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  @media (max-width: 760px) { .faixa-mineracao-conteudo { padding-top: 72px; padding-bottom: 72px; } }
+  @media (max-width: 760px) { .faixa-mineracao-conteudo { padding-top: 72px; padding-bottom: 72px; } .faixa-mineracao .vale { padding: 26px 24px; gap: 18px; } }
 
   /* municípios */
   .municipios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
@@ -764,7 +764,6 @@
   <div class="conteiner revelar faixa-mineracao-conteudo">
   <div class="vale">
     <div class="vale-texto">
-      <small>Iniciativa apoiada por</small>
       <blockquote>“O Observatório da CFEM representa um compromisso concreto com a transparência e o desenvolvimento sustentável dos territórios onde a atividade minerária ocorre, colocando dados e inteligência a serviço das comunidades.”</blockquote>
     </div>
     <div class="vale-logo">
