@@ -468,9 +468,9 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="submenu" id="sub-aplicacao" hidden>
-            <p class="submenu-desc">O que as prefeituras declaram ao Tesouro Nacional (Siconfi)</p>
-            <span class="sub-item desativado" aria-disabled="true"><span><b>Receitas</b><small>CFEM registrada pela prefeitura × repasse estimado; peso na receita total</small></span><span class="selo breve">Em breve</span></span>
-            <span class="sub-item desativado" aria-disabled="true"><span><b>Despesas por função e subfunção</b><small>Saúde, Educação, Segurança, Urbanismo, Saneamento…</small></span><span class="selo breve">Em breve</span></span>
+            <p class="submenu-desc">O que as prefeituras fazem com o dinheiro (receitas e despesas declaradas ao Siconfi)</p>
+            <a class="sub-item" href="dimensao-economica.html?tema=financas"><span><b>Receitas</b><small>Composição da receita, peso da CFEM e impostos próprios</small></span><span class="selo breve">Protótipo</span></a>
+            <a class="sub-item" href="dimensao-economica.html?tema=gasto"><span><b>Despesas por função e subfunção</b><small>Explorador do gasto: saúde, educação, urbanismo, saneamento…</small></span><span class="selo breve">Protótipo</span></a>
             <span class="sub-item desativado" aria-disabled="true"><span><b>Repasse × gasto</b><small>Cota da CFEM comparada ao gasto de cada área, por ano e por habitante</small></span><span class="selo breve">Em breve</span></span>
           </div>
         </li>
@@ -515,8 +515,8 @@
       </details>
       <details>
         <summary>Aplicação dos recursos <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
-        <span class="sub-item desativado" aria-disabled="true"><span><b>Receitas</b></span><span class="selo breve">Em breve</span></span>
-        <span class="sub-item desativado" aria-disabled="true"><span><b>Despesas por função</b></span><span class="selo breve">Em breve</span></span>
+        <a class="sub-item" href="dimensao-economica.html?tema=financas"><span><b>Receitas</b></span><span class="selo breve">Protótipo</span></a>
+        <a class="sub-item" href="dimensao-economica.html?tema=gasto"><span><b>Despesas por função</b></span><span class="selo breve">Protótipo</span></a>
         <span class="sub-item desativado" aria-disabled="true"><span><b>Repasse × gasto</b></span><span class="selo breve">Em breve</span></span>
       </details>
       <details>
@@ -588,24 +588,24 @@
         <p>60% do arrecadado · estimativa pela regra de distribuição da ANM</p>
         <a href="https://obcefem-api.vercel.app/distribuicao.html">Ver a distribuição →</a>
       </li>
-      <li class="degrau breve revelar">
-        <div class="degrau-topo"><span class="degrau-n">3</span><span class="selo breve">Em breve</span></div>
+      <li class="degrau revelar">
+        <div class="degrau-topo"><span class="degrau-n">3</span><span class="selo breve">Protótipo</span></div>
         <small>Quanto chegou de fato?</small>
         <h3>Receita declarada</h3>
         <span class="valor">Siconfi</span>
         <p>Receita de CFEM registrada pelas prefeituras no Tesouro Nacional</p>
-        <span class="sem-link">Em construção</span>
+        <a href="dimensao-economica.html?tema=financas">Ver as receitas →</a>
       </li>
-      <li class="degrau breve revelar">
-        <div class="degrau-topo"><span class="degrau-n">4</span><span class="selo breve">Em breve</span></div>
+      <li class="degrau revelar">
+        <div class="degrau-topo"><span class="degrau-n">4</span><span class="selo breve">Protótipo</span></div>
         <small>Onde foi gasto?</small>
         <h3>Despesa por função</h3>
         <span class="valor">Siconfi</span>
         <p>Funções e subfunções do orçamento municipal: saúde, educação, segurança…</p>
-        <span class="sem-link">Em construção</span>
+        <a href="dimensao-economica.html?tema=gasto">Explorar as despesas →</a>
       </li>
-      <li class="degrau breve revelar">
-        <div class="degrau-topo"><span class="degrau-n">5</span><span class="selo breve">Em breve</span></div>
+      <li class="degrau revelar">
+        <div class="degrau-topo"><span class="degrau-n">5</span><span class="selo breve">Protótipo</span></div>
         <small>O que mudou no município?</small>
         <h3>Resultados</h3>
         <span class="valor">4 eixos</span>
