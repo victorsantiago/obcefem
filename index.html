@@ -480,10 +480,10 @@
           </button>
           <div class="submenu" id="sub-dimensoes" hidden>
             <p class="submenu-desc">Gasto e resultado em quatro grandes eixos</p>
-            <a class="sub-item" href="#dimensoes"><span><b>Social</b><small>Emprego e renda, saúde, educação, pobreza, segurança</small></span><span class="selo breve">Em breve</span></a>
-            <a class="sub-item" href="#dimensoes"><span><b>Econômica</b><small>Atividades produtivas, PIB, finanças municipais, investimento</small></span><span class="selo breve">Em breve</span></a>
-            <a class="sub-item" href="#dimensoes"><span><b>Ambiental</b><small>Uso do território, emissões, saneamento, vegetação, resíduos</small></span><span class="selo breve">Em breve</span></a>
-            <a class="sub-item" href="#dimensoes"><span><b>Institucional</b><small>Gestão pública, legislação, capacidade, conselhos, transparência</small></span><span class="selo breve">Em breve</span></a>
+            <a class="sub-item" href="dimensao-social.html"><span><b>Social</b><small>Emprego e renda, saúde, educação, pobreza, segurança</small></span><span class="selo breve">Protótipo</span></a>
+            <a class="sub-item" href="dimensao-economica.html"><span><b>Econômica</b><small>Atividades produtivas, PIB, finanças municipais, investimento</small></span><span class="selo breve">Protótipo</span></a>
+            <a class="sub-item" href="dimensao-ambiental.html"><span><b>Ambiental</b><small>Uso do território, emissões, saneamento, vegetação, resíduos</small></span><span class="selo breve">Protótipo</span></a>
+            <a class="sub-item" href="dimensao-institucional.html"><span><b>Institucional</b><small>Gestão pública, legislação, capacidade, conselhos, transparência</small></span><span class="selo breve">Protótipo</span></a>
           </div>
         </li>
         <li><span class="menu-item" aria-disabled="true" title="Em breve" style="cursor: default">Metodologia</span></li>
@@ -522,10 +522,10 @@
       <details>
         <summary>Dimensões <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
         <div class="eixos-mini">
-          <a class="eixo-mini" href="#dimensoes" style="background: var(--social-fundo); color: #0b5f66">Social</a>
-          <a class="eixo-mini" href="#dimensoes" style="background: var(--economica-fundo); color: #7a5400">Econômica</a>
-          <a class="eixo-mini" href="#dimensoes" style="background: var(--ambiental-fundo); color: #24603d">Ambiental</a>
-          <a class="eixo-mini" href="#dimensoes" style="background: var(--institucional-fundo); color: #3b4863">Institucional</a>
+          <a class="eixo-mini" href="dimensao-social.html" style="background: var(--social-fundo); color: #0b5f66">Social</a>
+          <a class="eixo-mini" href="dimensao-economica.html" style="background: var(--economica-fundo); color: #7a5400">Econômica</a>
+          <a class="eixo-mini" href="dimensao-ambiental.html" style="background: var(--ambiental-fundo); color: #24603d">Ambiental</a>
+          <a class="eixo-mini" href="dimensao-institucional.html" style="background: var(--institucional-fundo); color: #3b4863">Institucional</a>
         </div>
       </details>
       <span class="direto" style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; font-weight: 700; color: var(--ink-2); border-bottom: 1px solid var(--grid)">Metodologia <span class="selo breve">Em breve</span></span>
@@ -671,28 +671,29 @@
         <h3>Social</h3>
         <ul><li>Emprego e renda</li><li>Saúde pública</li><li>Educação</li><li>Pobreza e vulnerabilidade</li><li>Segurança e violência</li></ul>
         <p class="fontes">Fontes previstas: Siconfi, RAIS/CAGED, DATASUS, INEP, CadÚnico, Atlas da Violência</p>
-        <span class="botao botao-borda" aria-disabled="true">Em breve</span>
+        <a class="botao botao-borda" href="dimensao-social.html">Ver o protótipo</a>
       </article>
       <article class="eixo economica revelar">
         <span class="icone"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="M16.5 7.5c0-1.7-2-3-4.5-3s-4.5 1.3-4.5 3 1.6 2.6 4.5 3.2 4.5 1.6 4.5 3.3-2 3-4.5 3-4.5-1.3-4.5-3"/></svg></span>
         <h3>Econômica</h3>
         <ul><li>Atividades produtivas</li><li>Crescimento econômico</li><li>Finanças municipais</li><li>Distribuição da CFEM</li><li>Investimento público</li></ul>
         <p class="fontes">Fontes previstas: IBGE (PIB municipal), Siconfi, ANM</p>
-        <a class="botao botao-primario" href="https://obcefem-api.vercel.app/distribuicao.html">Ver a distribuição</a>
+        <a class="botao botao-borda" href="dimensao-economica.html">Ver o protótipo</a>
+        <a class="botao botao-primario" href="https://obcefem-api.vercel.app/distribuicao.html" style="margin-top: 0">Ver a distribuição</a>
       </article>
       <article class="eixo ambiental revelar">
         <span class="icone"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-7"/><path d="M12 14c-4 0-6-3-6-6.5C6 5 8.5 3 12 3s6 2 6 4.5C18 11 16 14 12 14z"/></svg></span>
         <h3>Ambiental</h3>
         <ul><li>Uso do território</li><li>Emissões de gases</li><li>Saneamento básico</li><li>Cobertura vegetal</li><li>Gestão de resíduos</li></ul>
         <p class="fontes">Fontes previstas: MapBiomas, SEEG, SNIS, Siconfi</p>
-        <span class="botao botao-borda" aria-disabled="true">Em breve</span>
+        <a class="botao botao-borda" href="dimensao-ambiental.html">Ver o protótipo</a>
       </article>
       <article class="eixo institucional revelar">
         <span class="icone"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2"/><path d="M9 7.5V5.5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5.5v2"/><path d="M9.5 7.5v12M14.5 7.5v12"/></svg></span>
         <h3>Institucional</h3>
         <ul><li>Organização da gestão pública</li><li>Legislação sobre a CFEM</li><li>Capacidade administrativa</li><li>Conselhos e participação</li><li>Transparência fiscal</li></ul>
         <p class="fontes">Fontes previstas: IBGE (MUNIC), Tesouro Nacional, legislação municipal</p>
-        <span class="botao botao-borda" aria-disabled="true">Em breve</span>
+        <a class="botao botao-borda" href="dimensao-institucional.html">Ver o protótipo</a>
       </article>
     </div>
   </div>

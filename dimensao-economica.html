@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dimensão Econômica · Observatório da CFEM</title>
+<meta name="description" content="Protótipo da dimensão econômica do Observatório da CFEM: indicadores de Parauapebas e Canaã dos Carajás comparados à RI Carajás, ao Pará e ao Brasil.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none !important}
+body{margin:0;background:#eceeec;color:#1c1e21;font-family:'Public Sans',system-ui,sans-serif;font-size:15px;line-height:1.5}
+a{color:#237a5a}a:hover{color:#1c6549}
+:focus-visible{outline:2px solid #1c1e21;outline-offset:2px}
+.aba-eixo:hover{background:#f5f6f4}
+@media (max-width:900px){.nav-lista{display:none !important}}
+main.pagina{max-width:1280px;margin:0 auto;padding:24px 32px 64px}
+@media (max-width:700px){main.pagina{padding:16px 16px 48px}}
+/* filtros */
+.filtros{display:flex;gap:12px 28px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid #d6d9d5;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:13px}
+.filtros b{color:#464b52}
+.grupo{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;border-radius:999px;font:inherit;font-size:13px;cursor:pointer;border:1.5px solid #1c1e21;background:#fff;color:#1c1e21;font-weight:600}
+.chip[aria-pressed="false"]{border:1px solid #d6d9d5;background:#f5f6f4;color:#69707a;font-weight:400;text-decoration:line-through}
+.chip .traco{display:inline-block;width:16px}
+.periodo{display:flex;gap:8px;align-items:center;color:#464b52;flex-wrap:wrap}
+.periodo label{display:flex;align-items:center;gap:6px}
+.periodo select{font:inherit;font-size:14px;min-height:36px;padding:0 8px;border:1px solid #d6d9d5;border-radius:6px;background:#f5f6f4}
+.acoes-filtro{margin-left:auto;display:flex;gap:16px;align-items:center}
+.botao-texto{min-height:36px;padding:0 4px;border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:#237a5a;text-decoration:underline;cursor:pointer}
+.botao-discreto{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border:1px solid #d6d9d5;border-radius:6px;background:#fff;font:inherit;font-size:13px;font-weight:600;color:#464b52;cursor:pointer}
+.botao-discreto:hover{background:#f5f6f4;color:#1c1e21}
+.botao-discreto:disabled{cursor:progress;opacity:.75}
+.aviso{margin:0 0 12px;padding:10px 14px;border-radius:8px;background:#fde8e8;border:1px solid #f3c2c2;color:#8a1f1f;font-size:13px}
+/* abas */
+.abas{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-end;position:relative;z-index:2}
+.aba{flex:none;min-height:46px;padding:0 20px;border-radius:10px 10px 0 0;font:inherit;font-size:14.5px;cursor:pointer;white-space:nowrap;background:#dfe2de;border:1px solid transparent;color:#464b52;font-weight:600}
+.aba:hover{background:#e8eae6;color:#1c1e21}
+.aba[aria-selected="true"]{background:#f5f6f4;border:1px solid #d6d9d5;border-bottom-color:#f5f6f4;color:#1c1e21;font-weight:700;margin-bottom:-1px;box-shadow:inset 0 3px 0 #237a5a}
+.painel{background:#f5f6f4;border:1px solid #d6d9d5;border-radius:0 12px 12px 12px;padding:24px;margin-top:-1px;position:relative;z-index:1}
+@media (max-width:700px){.painel{padding:14px}.aba{padding:0 12px;font-size:13.5px;min-height:42px}}
+.cabeca-tema{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:16px;border-bottom:1px solid #d6d9d5;padding-bottom:10px}
+.cabeca-tema h2{margin:0;font-size:24px;font-weight:800;letter-spacing:-.01em}
+.cabeca-tema p{margin:4px 0 0;color:#464b52;max-width:80ch}
+.selo-cruzamento{font-size:12px;font-weight:700;color:#0b5f66;background:#e2f4f5;padding:4px 10px;border-radius:999px;white-space:nowrap}
+/* cartões dos gráficos */
+.grade{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px}
+.cartao{grid-column:span 6}
+.largo{grid-column:1 / -1}
+.s3{grid-column:span 3}
+.s6{grid-column:span 6}
+@media (max-width:1180px){.s3{grid-column:span 6}.s6{grid-column:1 / -1}}
+@media (max-width:1000px){.cartao,.s3,.s6{grid-column:1 / -1}}
+.cartao{background:#fff;border:1px solid #d6d9d5;border-radius:10px;padding:18px 18px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cartao h3{margin:0;font-size:15px;font-weight:700;line-height:1.3}
+.cartao .sub{margin:-4px 0 0;font-size:12.5px;color:#69707a;line-height:1.4}
+.grafico{width:100%;min-height:200px}
+.descricao{margin:4px 0 0;font-size:13px;color:#2e3236;line-height:1.5}
+.nota{margin:0;font-size:12px;color:#69707a;line-height:1.45}
+.vazio{padding:40px 12px;text-align:center;color:#69707a;font-size:13px;margin:0}
+.rodape-cartao{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:6px 12px;flex-wrap:wrap;font-size:11.5px;color:#69707a;border-top:1px solid #e8eae6;padding-top:8px}
+.rodape-cartao .acoes{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.selo{font-weight:700;padding:1px 8px;border-radius:999px;white-space:nowrap}
+.selo.real{color:#1c6549;background:#e3f1ec}
+.selo.ficticio{color:#7a5400;background:#fbf0d9}
+.baixar{min-height:28px;padding:0 10px;border:1px solid #d6d9d5;border-radius:6px;background:#fff;font:inherit;font-size:11.5px;font-weight:700;color:#464b52;cursor:pointer}
+.baixar:hover{background:#f5f6f4;color:#1c1e21}
+
+/* explorador da despesa */
+.exp-controles{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;font-size:13px;color:#464b52;margin:4px 0 6px}
+.exp-controles label{display:flex;align-items:center;gap:6px;font-weight:600}
+.exp-controles select,.exp-controles input{font:inherit;font-size:13.5px;min-height:36px;padding:0 8px;border:1px solid #d6d9d5;border-radius:6px;background:#f5f6f4;color:#1c1e21}
+.exp-controles input[type=search]{flex:1;min-width:220px;background:#fff}
+.exp-segmentado{display:inline-flex;border:1px solid #d6d9d5;border-radius:6px;overflow:hidden}
+.exp-segmentado button{min-height:36px;padding:0 14px;border:0;background:#fff;font:inherit;font-size:13px;font-weight:600;color:#464b52;cursor:pointer}
+.exp-segmentado button+button{border-left:1px solid #d6d9d5}
+.exp-segmentado button[aria-checked="true"]{background:#237a5a;color:#fff}
+.exp-rolagem{overflow-x:auto;border:1px solid #e8eae6;border-radius:8px}
+.exp-tabela{width:100%;border-collapse:collapse;font-size:12.5px;min-width:760px}
+.exp-legenda{caption-side:top;text-align:left;font-size:11.5px;color:#69707a;padding:8px 10px 0}
+.exp-tabela th,.exp-tabela td{padding:5px 10px;border-bottom:1px solid #eef0ec;text-align:right;white-space:nowrap}
+.exp-tabela th[scope=row],.exp-tabela thead th:first-child{text-align:left;position:sticky;left:0;background:#fff;z-index:1;min-width:250px;white-space:normal}
+.exp-tabela thead th{background:#f5f6f4;font-weight:600;color:#464b52;border-bottom:1px solid #d6d9d5;vertical-align:bottom}
+.exp-tabela thead th:first-child{background:#f5f6f4}
+.exp-tabela thead button{border:0;background:none;font:inherit;font-weight:600;color:inherit;cursor:pointer;padding:4px 0;display:inline-flex;align-items:center;gap:6px;text-align:right}
+.exp-tabela thead .traco{display:inline-block;width:14px}
+.exp-tabela td{min-width:120px}
+.exp-valor{display:block;font-variant-numeric:tabular-nums;color:#1c1e21}
+.exp-barra{display:block;height:5px;background:#f1f2f0;border-radius:3px;margin-top:3px;overflow:hidden}
+.exp-barra i{display:block;height:100%;border-radius:3px}
+.exp-f th{font-weight:600}
+.exp-s th{font-weight:400;padding-left:44px !important}
+.exp-s td .exp-valor{color:#464b52}
+.exp-tabela tr.sel th,.exp-tabela tr.sel td{background:#e3f1ec}
+.exp-nome{display:flex;align-items:center;gap:0}
+.exp-abrir{flex:none;width:26px;height:26px;border:1px solid #d6d9d5;border-radius:5px;background:#fff;cursor:pointer;font-size:12px;color:#464b52;margin-right:6px;vertical-align:middle}
+.exp-item{border:0;background:none;font:inherit;color:#1c1e21;cursor:pointer;text-align:left;padding:4px 0;font-weight:inherit}
+.exp-item:hover{color:#237a5a;text-decoration:underline}
+.exp-item .cod{color:#69707a;font-variant-numeric:tabular-nums;margin-right:2px}
+.exp-mais{min-height:4px}
+.exp-detalhe{border-top:1px solid #e8eae6;padding-top:12px;margin-top:4px}
+.exp-detalhe-cab{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.exp-detalhe h4{margin:0;font-size:14px;font-weight:700}
+.exp-atalho{font-size:13px;font-weight:600}
+@media (max-width:700px){.exp-tabela{min-width:620px;font-size:12px}.exp-tabela th[scope=row],.exp-tabela thead th:first-child{min-width:150px}.exp-s th{padding-left:30px !important}.exp-tabela td{min-width:96px}.exp-controles input[type=search]{min-width:100%}}
+</style>
+</head>
+<body>
+<header style="background: #ffffff; border-bottom: 1px solid #d6d9d5; position: sticky; top: 0; z-index: 10">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 10px 32px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap">
+      <a href="index.html" style="display: flex; text-decoration: none"><img src="logo-observatorio-cfem.png" alt="Observatório da CFEM" style="height: 44px; width: auto; display: block"></a>
+      <nav aria-label="Menu principal" style="flex: 1; min-width: 0">
+        <ul class="nav-lista" style="list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end">
+          <li><a href="index.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; font-weight: 600; color: #464b52; text-decoration: none">Início</a></li>
+          <li><a href="https://obcefem-api.vercel.app/" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; font-weight: 600; color: #464b52; text-decoration: none">CFEM</a></li>
+          <li><a href="index.html#dinheiro" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; font-weight: 600; color: #464b52; text-decoration: none">Aplicação dos recursos</a></li>
+          <li><a href="index.html#dimensoes" aria-current="page" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; font-weight: 700; color: #237a5a; text-decoration: none; box-shadow: inset 0 -3px 0 #237a5a">Dimensões</a></li>
+          <li><a href="index.html#faq" style="display: flex; align-items: center; min-height: 44px; padding: 0 14px; font-weight: 600; color: #464b52; text-decoration: none">Metodologia</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+<main class="pagina" id="conteudo">
+<nav aria-label="Você está em" style="font-size: 13px; color: #69707a; margin-bottom: 16px"><a href="index.html">Início</a> › Dimensões › <b style="color: #1c1e21">Econômica</b></nav>
+<nav aria-label="Dimensões" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px">
+      <a class="aba-eixo" href="dimensao-social.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; background: #ffffff; border: 1px solid #d6d9d5; color: #464b52; font-weight: 600; text-decoration: none">Social</a>
+      <a class="aba-eixo" href="dimensao-economica.html" aria-current="page" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; background: #9a6a00; color: #ffffff; font-weight: 700; text-decoration: none">Econômica</a>
+      <a class="aba-eixo" href="dimensao-ambiental.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; background: #ffffff; border: 1px solid #d6d9d5; color: #464b52; font-weight: 600; text-decoration: none">Ambiental</a>
+      <a class="aba-eixo" href="dimensao-institucional.html" style="display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; background: #ffffff; border: 1px solid #d6d9d5; color: #464b52; font-weight: 600; text-decoration: none">Institucional</a>
+    </nav>
+<section style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 20px">
+      <span style="width: 64px; height: 64px; border-radius: 14px; background: #fbf0d9; color: #9a6a00; display: grid; place-items: center; flex: none">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"></path><path d="M16.5 7.5c0-1.7-2-3-4.5-3s-4.5 1.3-4.5 3 1.6 2.6 4.5 3.2 4.5 1.6 4.5 3.3-2 3-4.5 3-4.5-1.3-4.5-3"></path></svg>
+      </span>
+      <div style="flex: 1; min-width: 280px">
+        <h1 style="margin: 0; font-size: 34px; font-weight: 800; letter-spacing: -.02em">Dimensão Econômica</h1>
+        <p id="descricao-dimensao" style="margin: 6px 0 0; font-size: 16px; color: #464b52; max-width: 80ch">Crescimento, dependência das commodities, finanças das prefeituras e em que elas gastam. A pergunta de fundo: a economia local está se preparando para depois da mineração?</p>
+      </div>
+    </section>
+<section class="filtros" aria-label="Filtros">
+  <div class="grupo" role="group" aria-label="Municípios e médias na comparação"><b>Comparar</b><span class="grupo" id="chips"></span></div>
+  <div class="periodo" id="periodo"><b>Período</b>
+    <label>de <select id="ano-de" aria-label="Ano inicial"></select></label>
+    <label>até <select id="ano-ate" aria-label="Ano final"></select></label>
+  </div>
+  <div class="acoes-filtro">
+    <button type="button" class="botao-texto" id="restaurar">Restaurar filtros</button>
+    <button type="button" class="botao-discreto" id="baixar-pdf" title="Baixar um PDF com todos os gráficos desta dimensão, com descrição e fonte"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 10l5 5 5-5"/><path d="M5 20h14"/></svg>Download</button>
+  </div>
+</section>
+<p class="aviso" id="aviso" role="alert" hidden></p>
+<div class="abas" role="tablist" aria-label="Temas desta dimensão" id="abas"></div>
+<section class="painel" role="tabpanel" id="painel" tabindex="0"></section>
+</main>
+<footer style="border-top: 1px solid #d6d9d5; background: #237a5a; color: #ffffff">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 20px 32px; font-size: 13px">Observatório da CFEM · Protótipo de navegação · dados reais e fictícios (veja o selo de cada gráfico)</div>
+  </footer>
+<script>
+window.DIMENSAO = {"id": "economica", "titulo": "Econômica"};
+window.DESCRICOES = {"Evolução da população, 2000–2025": "Mostra quantas pessoas moram em cada município ano a ano. Saltos na linha indicam chegada de migrantes, em geral ligada à abertura de minas e grandes obras; a média da região serve de referência para ver se o crescimento é fora do comum.", "Crescimento médio anual da população, 2010–2022": "Quanto a população cresceu, em média, a cada ano entre os Censos de 2010 e 2022. Quanto maior a barra, maior a pressão sobre escolas, postos de saúde, moradia e saneamento.", "Estrutura etária da população, 2022": "Três medidas da idade da população. A proporção de idosos e o índice de envelhecimento mostram o peso dos mais velhos; a razão de dependência mostra quantas crianças e idosos há para cada 100 pessoas em idade de trabalhar. Perfis diferentes pedem gastos públicos diferentes.", "Pirâmide etária de Parauapebas, 2022": "Distribuição da população por sexo (homens à esquerda, mulheres à direita) e faixa de idade. Uma base larga indica muitas crianças; faixas adultas mais largas entre os homens costumam indicar migração para trabalhar.", "Pirâmide etária de Canaã dos Carajás, 2022": "Mesma leitura da pirâmide anterior, para Canaã dos Carajás. Compare as duas para ver qual cidade tem mais jovens e mais homens em idade ativa.", "Evolução do emprego formal (Novo CAGED), 2020–2026": "Quantidade de empregos com carteira assinada, com o início de 2020 valendo 100. Uma linha subindo mais que as outras indica que o mercado formal local cresce mais rápido que o da região e o do país.", "Emprego formal como % da população, 2025": "Quantos empregos com carteira assinada existem para cada 100 moradores. Ajuda a ver se a riqueza da mineração vira trabalho formal para quem mora na cidade.", "Emprego formal por setor, 2025": "Em que setores estão os empregos formais. Muito peso na indústria (que inclui a extração mineral) indica dependência da mineração; uma economia mais diversificada distribui o emprego entre comércio e serviços.", "Remuneração média do trabalhador formal, total e por sexo, 2023": "Salário médio mensal dos empregos formais, no total e separado para homens e mulheres. A diferença entre as barras de homens e mulheres mostra a desigualdade de renda por sexo.", "Vínculos por escolaridade do trabalhador formal, 2023": "Escolaridade de quem tem emprego formal. Uma fatia pequena de ensino superior sugere que os postos mais qualificados são ocupados por pessoas de fora ou que faltam oportunidades de formação local.", "Rendimento domiciliar mensal per capita, 2022": "Renda média por pessoa dentro das casas, somando todas as fontes (trabalho, aposentadoria, benefícios). Mede o padrão de vida das famílias, e não só de quem tem emprego formal.", "Nível de instrução por sexo, 2022": "Percentual de adultos com ensino superior completo, separado por sexo. Mostra o estoque de qualificação da população e se há diferença entre homens e mulheres.", "Canaã dos Carajás: trabalho por sexo, 2022": "Compara homens e mulheres em Canaã dos Carajás: quantos estão empregados e quantos trabalham sem carteira assinada (informalidade). Diferenças grandes apontam para um mercado de trabalho que inclui menos as mulheres.", "Despesa per capita em educação (função 12), 2013–2024": "Quanto a prefeitura gastou com educação por morador em cada ano, segundo a prestação de contas ao Tesouro Nacional. Serve para comparar o esforço de gasto com a cota da CFEM e com os resultados de aprendizagem ao lado.", "Despesa em educação por subfunção, 2024": "Como o gasto em educação se divide entre ensino fundamental, educação infantil (creches e pré-escola) e outras áreas. Mostra as prioridades da rede municipal.", "Notas do IDEB, 2023": "O IDEB, de 0 a 10, combina aprendizagem (provas do SAEB) e aprovação. Os anos iniciais vão do 1º ao 5º ano e os finais do 6º ao 9º; queda entre eles indica perda de aprendizagem ao longo da trajetória escolar.", "Distorção idade-série, 2023": "Percentual de alunos com dois anos ou mais de atraso em relação à série esperada para a idade. Reprovação, abandono e entrada tardia na escola aumentam esse número.", "Gasto por aluno × IDEB dos anos iniciais, 2023": "Cada ponto é um município minerador do Pará: quanto ele gasta por aluno (eixo horizontal) e a nota que alcança (eixo vertical). As linhas tracejadas dividem o gráfico em quatro grupos; o ideal é ficar no canto de cima, com bom resultado.", "Despesa per capita em saúde (função 10), 2013–2024": "Quanto a prefeitura gastou com saúde por morador em cada ano. Picos podem refletir obras de hospitais, compra de equipamentos ou emergências, como em 2020 e 2021.", "Mortalidade em menores de 5 anos, 2023": "Mortes de crianças de até 5 anos para cada mil nascidas vivas. É um dos indicadores mais sensíveis à qualidade do pré-natal, da atenção básica e do saneamento.", "Cobertura da atenção primária à saúde, 2023": "Parte da população atendida por equipes de saúde da família e postos de saúde. Cobertura alta é a porta de entrada para prevenção e acompanhamento contínuo.", "Gasto per capita em saúde × mortalidade infantil, 2023": "Cada ponto é um município minerador do Pará: gasto em saúde por habitante (horizontal) e mortalidade infantil (vertical). Aqui o melhor é ficar embaixo: gastar e ter menos mortes.", "Famílias pobres no CadÚnico, julho de 2026": "Entre as famílias inscritas no Cadastro Único, a parte com renda por pessoa de até R$ 218 (linha de pobreza do Bolsa Família) e de até meio salário mínimo. Mostra quanto da população vulnerável continua pobre.", "CadÚnico e Bolsa Família, 2026": "Parte da população inscrita no Cadastro Único, a porta de entrada dos programas sociais, e parte que recebe o Bolsa Família. Valores altos indicam muita gente dependendo de transferência de renda.", "Pobreza, 2018–2026": "Evolução da parte da população em famílias pobres no CadÚnico. Uma linha que não cai mesmo com aumento da arrecadação indica que a riqueza não está chegando às famílias mais pobres.", "Despesa per capita em assistência social (função 08), 2013–2024": "Quanto a prefeitura gasta, por morador, com assistência social (CRAS, CREAS, benefícios e acolhimento). Compare com a evolução da pobreza ao lado.", "Taxa de homicídio por arma de fogo, 1989–2022": "Mortes por arma de fogo a cada 100 mil habitantes, ao longo de três décadas. Permite ver se a violência subiu junto com a expansão da mineração e da população.", "Violência, 2023": "Homicídios de jovens e mortes no trânsito a cada 100 mil habitantes. Taxas por habitante permitem comparar cidades de tamanhos diferentes.", "Despesa per capita em segurança pública (função 06), 2013–2024": "Quanto as prefeituras gastam por morador com segurança pública (guarda municipal, videomonitoramento, iluminação de segurança). A segurança é sobretudo dever do estado, mas o gasto municipal mostra o esforço local.", "Infraestrutura dos domicílios, 2022": "Parte das casas com ligação à rede de esgoto, água da rede geral, banheiro de uso exclusivo e coleta de lixo, segundo o Censo 2022. Mostra se a infraestrutura acompanhou o crescimento da cidade.", "População residente em favelas e comunidades urbanas, 2022": "Parte da população que mora em favelas e comunidades urbanas, áreas de ocupação irregular e com serviços precários. Costuma crescer quando a cidade recebe migrantes mais rápido do que oferece moradia.", "Características do entorno dos domicílios, 2022": "Parte dos moradores em ruas com iluminação, pavimentação, calçada e árvores. Mede a qualidade urbana além da casa.", "População por situação do domicílio, 2022": "Divisão da população entre área urbana e rural. Ajuda a planejar onde estão as demandas por transporte, escolas e saúde.", "Número de veículos, 2023": "Veículos registrados para cada 100 habitantes. Frota grande indica renda, mas também pressão sobre o trânsito e mais acidentes.", "Dinâmica econômica: PIB, 2010–2023": "Crescimento do Produto Interno Bruto, com 2010 valendo 100. Uma linha muito acima das outras mostra uma economia que cresceu puxada pela mineração.", "Participação no PIB da RI Carajás, 2010–2023": "Quanto de toda a riqueza produzida na Região de Integração do Carajás vem de cada cidade. Mostra a concentração econômica nos municípios mineradores.", "PIB per capita, 2010–2023": "Riqueza produzida no município dividida pelo número de moradores. Na mineração ela fica muito alta porque o valor do minério entra no PIB local, mas isso não significa que a renda chegue às pessoas.", "Valor adicionado por setor, 2023": "Divisão da riqueza produzida entre indústria extrativa (mineração), transformação e construção, serviços, administração pública e agropecuária. Quanto maior a fatia extrativa, maior a dependência da mineração.", "Preço do minério de ferro, 1985–2025": "Preço internacional do minério de ferro, em dólares por tonelada. A CFEM é calculada sobre o faturamento das mineradoras, então sobe e desce junto com esse preço.", "Preço do cobre, 2000–2026": "Preço internacional do cobre, em dólares por tonelada. É o principal produto do Sossego, em Canaã dos Carajás, e afeta a arrecadação da cidade.", "Cota municipal da CFEM, 2013–2025": "Quanto da CFEM cabe a cada município produtor por ano (60% do arrecadado desde 2018). Compare com os preços ao lado para ver a dependência das commodities.", "Composição das receitas correntes de Canaã dos Carajás, 2013–2024": "De onde vem o dinheiro que a prefeitura de Canaã usa no dia a dia: CFEM, ICMS repassado pelo estado, IPTU e ISSQN (impostos próprios) e outras receitas. Cada barra soma 100%.", "Composição das receitas correntes, 2024": "Mesma divisão das receitas para cada comparação, em 2024. Mostra quanto cada prefeitura depende da CFEM e de repasses, em vez de arrecadação própria.", "Divisão do ICMS repassado aos municípios da RI Carajás, 2023": "Como o ICMS que o Governo do Pará repassa aos 12 municípios da região se divide entre eles. A parte de cada cidade depende sobretudo do valor das vendas e da produção registradas nela.", "Impostos próprios, 2023": "Impostos cobrados pela própria prefeitura (como IPTU e ISSQN) em relação ao PIB e à receita corrente. Valores baixos indicam pouca arrecadação própria e dependência de royalties e repasses.", "Peso da CFEM na receita corrente, 2013–2024": "Parte da receita corrente da prefeitura que vem da CFEM. Quanto maior, mais a cidade depende da mineração para pagar as contas e mais vulnerável fica a quedas de preço ou ao fim das minas.", "Canaã dos Carajás: despesa por função, 2013–2025": "Como a prefeitura de Canaã divide a despesa entre administração, educação, saúde, urbanismo e as demais áreas. Cada barra soma 100% e mostra as prioridades de cada ano.", "Urbanismo: despesa per capita (função 15), 2013–2024": "Gasto por morador com urbanismo: ruas, praças, iluminação e infraestrutura urbana. Costuma crescer quando entra muito dinheiro de royalties, porque obras são visíveis e rápidas.", "Agricultura: despesa per capita (função 20), 2013–2024": "Gasto por morador com agricultura. É um dos sinais de esforço para diversificar a economia e preparar a cidade para depois da mineração.", "Investimentos como % da despesa total, 2013–2024": "Parte da despesa que vira obras, instalações e equipamentos, em vez de custeio. Investir mais deixa um legado físico para quando a mineração acabar.", "Investimento per capita, 2024": "Valor investido em obras e equipamentos por morador. Permite comparar o esforço de investimento entre cidades de tamanhos diferentes.", "Cobertura florestal na RI Carajás em 1985": "Ilustração de como o território era ocupado em 1985, por tipo de uso (floresta, pastagem, agricultura, mineração, área urbana, água). Compare com o mapa de 2023.", "Cobertura florestal na RI Carajás em 2023": "A mesma área em 2023. A diferença para 1985 mostra quanto da floresta virou pasto, lavoura, mina ou cidade.", "Uso da terra: floresta, 1985–2024": "Parte do território coberta por floresta ao longo do tempo, pela classificação de imagens de satélite do MapBiomas. Quedas fortes indicam desmatamento.", "Uso do solo: área urbana, 1985–2024": "Parte do território ocupada por área urbana. Mostra o ritmo de expansão das cidades.", "Percentual de uso da terra, 2025": "Divisão atual do território entre floresta, pastagem, agricultura, mineração, área urbana e água.", "Dinâmica de uso do solo em Canaã dos Carajás, 1985–2024": "Como o uso do território de Canaã dos Carajás mudou década a década. Cada barra soma 100%.", "Emissão de CO2 equivalente, 2000–2023": "Gases de efeito estufa emitidos por morador, em toneladas de CO2 equivalente. O desmatamento e a mudança de uso da terra costumam ser a maior fonte na Amazônia.", "Emissões por setor, 2023": "De onde vêm as emissões: mudança de uso da terra, agropecuária, energia, processos industriais e resíduos.", "Saneamento nos domicílios, 2022": "Parte das casas com ligação à rede de esgoto, água da rede geral, banheiro exclusivo e coleta de lixo, segundo o Censo 2022. O esgoto é, em geral, o serviço mais atrasado.", "Saneamento: despesa per capita (função 17), 2013–2024": "Quanto a prefeitura gasta por morador com saneamento (água, esgoto, drenagem). Compare com a cobertura dos serviços ao lado.", "Despesa em saneamento × domicílios com esgoto adequado": "Cada ponto é um município minerador do Pará: gasto médio em saneamento por habitante (horizontal) e parte das casas com esgoto adequado (vertical). Mostra se o gasto se converte em serviço.", "Gestão ambiental: despesa per capita (função 18), 2013–2024": "Gasto por morador com gestão ambiental: fiscalização, licenciamento, recuperação de áreas e educação ambiental.", "Barômetro da Sustentabilidade, 2022": "Índice da FAPESPA que combina indicadores em duas notas de 0 a 100: bem-estar do ecossistema (meio ambiente) e bem-estar humano (condições sociais). Um município só é sustentável se as duas forem altas.", "Índice de Desenvolvimento Sustentável das Cidades (IDSC), 2025": "Nota de 0 a 100 que mede o avanço do município nos 17 Objetivos de Desenvolvimento Sustentável da ONU. Permite comparar com todos os municípios do Brasil.", "IDSC por objetivo de desenvolvimento sustentável, 2024": "Nota do IDSC em alguns dos 17 objetivos (ex.: pobreza, saúde, educação, água e saneamento). Mostra em quais áreas o município está melhor ou pior.", "Receita per capita e IDSC: grupos AA, AB, BA e BB": "Cruza a receita por habitante com o IDSC. O grupo AB, com receita alta e desenvolvimento baixo, indica que ter dinheiro não basta: a gestão pública faz a diferença (IPEA, TD 3146).", "Receita per capita alta e IDSC baixo (grupo AB), por faixa de receita": "Quantos municípios ficam acima e abaixo da média do IDSC em cada faixa de receita por habitante. Ajuda a ver se mais receita costuma vir acompanhada de mais desenvolvimento.", "Ranking de competitividade dos municípios, 2025": "Posição do município em pilares do Ranking de Competitividade do CLP, como sustentabilidade fiscal, saneamento, educação e segurança. Quanto menor a posição, melhor.", "Qualidade da informação contábil e fiscal no Siconfi, 2025": "Nota do Tesouro Nacional para a qualidade e a consistência dos dados que a prefeitura envia ao Siconfi. Dados ruins dificultam o controle social do uso da CFEM.", "Conselhos municipais ativos, 2023": "Número de conselhos (saúde, educação, assistência, meio ambiente etc.) que se reuniram no último ano. Conselhos ativos são um canal de participação da sociedade nas decisões de gasto.", "Servidores com ensino superior, 2023": "Parte do quadro de pessoal da prefeitura com ensino superior. É um indicador de capacidade técnica para planejar e executar políticas.", "Administração geral: despesa per capita (função 04), 2024": "Gasto por morador com a máquina administrativa. Valores muito altos podem indicar que os recursos ficam no custeio da prefeitura em vez de chegar aos serviços.", "Cobertura da terra em Canaã dos Carajás, 1985": "Como o território de Canaã dos Carajás estava coberto em 1985, pela classificação de imagens de satélite do MapBiomas: floresta, agropecuária (pasto e lavoura), vegetação herbácea e arbustiva, área não vegetada (inclui mineração e cidade) e água.", "Evolução da cobertura da terra em Canaã dos Carajás, 1985–2025": "Área de cada classe ano a ano, em mil hectares. Quando a linha da floresta desce e a da agropecuária sobe na mesma medida, a floresta foi convertida em pasto ou lavoura.", "Cobertura da terra em Canaã dos Carajás, 2025": "A mesma classificação em 2025. Compare com 1985 para ver quanto da floresta virou agropecuária e quanto cresceu a área não vegetada, que inclui as minas e a cidade.", "Explorador da despesa por função e subfunção": "Mostra em que as prefeituras gastam, pela classificação oficial do orçamento: cada função (Saúde, Educação, Urbanismo…) se divide em subfunções (Atenção Básica, Ensino Fundamental, Infraestrutura Urbana…). A etapa indica o momento da despesa: empenhada (reservada), liquidada (serviço entregue) ou paga. Compare as colunas para ver onde Parauapebas e Canaã gastam acima ou abaixo das médias e clique numa linha para ver como esse gasto evoluiu."};
+function dadosDimensao() {
+
+    const rnd = (s) => { const x = Math.sin(s * 12.9898) * 43758.5453; return x - Math.floor(x); };
+    const SER = [['Parauapebas', '#2a78d6', false], ['Canaã dos Carajás', '#eb6834', false], ['Média RI Carajás', '#6250d6', true],
+      ['Média dos mineradores do PA', '#1baf7a', true], ['Média do Brasil', '#52514e', true]];
+    const anos = (a, b) => { const r = []; for (let x = a; x <= b; x++) r.push(String(x)); return r; };
+    const trilha = (n, ini, fim, sem, amp) => Array.from({ length: n }, (_, i) => { const t = n > 1 ? i / (n - 1) : 0; return (ini + (fim - ini) * t) * (1 + (rnd(sem + i * 7.1) - 0.5) * 2 * (amp ?? 0.05)); });
+    const L5 = (rot, faixas, sem, amp) => SER.map(([nome, cor, tr], k) => ({ nome, cor, tracejado: tr, valores: trilha(rot.length, faixas[k][0], faixas[k][1], sem + k * 31, amp) }));
+    const B5 = (mat) => SER.map(([nome, cor], k) => ({ nome, cor, valores: mat[k] }));
+    const H5 = (vals) => SER.map(([nome, cor], k) => ({ nome, cor, valor: vals[k] }));
+    const C5 = (mat) => SER.map(([nome], k) => ({ nome, partes: mat[k] }));
+    // série a partir de pontos-chave {ano: valor}, com ruído leve
+    const curva = (a, b, chaves, sem, amp) => anos(a, b).map((s, i) => {
+      const ano = Number(s), ks = Object.keys(chaves).map(Number).sort((x, y) => x - y);
+      let k = 0; while (k < ks.length - 2 && ano > ks[k + 1]) k++;
+      const a0 = ks[k], a1 = ks[k + 1], t = Math.min(1, Math.max(0, (ano - a0) / (a1 - a0)));
+      return (chaves[a0] + (chaves[a1] - chaves[a0]) * t) * (1 + (rnd(sem + i) - 0.5) * 2 * (amp ?? 0.04));
+    });
+    const G = (tipo, dados, largo) => ({ tipo, dados, largo: Boolean(largo) });
+    // ---------- dados reais: palestra "Indicadores" do LAGEM/UFPA (Curso Canaã, set/2026) ----------
+    const PAL = 'palestra do LAGEM/UFPA (Curso Canaã, set/2026)';
+    const RS = {
+      P: ['Parauapebas', 0, '#2a78d6', false], C: ['Canaã dos Carajás', 1, '#eb6834', false],
+      RIm: ['Média RI Carajás (12 municípios)', 2, '#6250d6', true], RI: ['RI Carajás (região)', 2, '#6250d6', true],
+      PA: ['Pará (estado)', 3, '#1baf7a', true], MIN: ['Média dos mineradores da RI Carajás', 3, '#1baf7a', true],
+      NMIN: ['Média dos não mineradores da RI Carajás', -1, '#8a8f96', true],
+    };
+    const rs = (k) => { const [nome, g, cor, tracejado] = RS[k]; return { nome, grupo: g >= 0 ? SER[g][0] : null, cor, tracejado }; };
+    const NOTAS_RS = { RIm: 'Média RI = média simples dos 12 municípios, calculada com os dados da palestra.', PA: 'A fonte traz o Pará como um todo, no lugar da média dos municípios mineradores.',
+      MIN: 'Mineradores da RI: Parauapebas, Canaã, Marabá e Curionópolis.' };
+    const falta = (ks) => { const tem = new Set(ks.map((k) => RS[k][1])); const f = SER.filter((s, i) => !tem.has(i)).map((s) => s[0]);
+      return [...ks.map((k) => NOTAS_RS[k]).filter(Boolean), f.length ? 'Sem dado na fonte para: ' + f.join(', ') + '.' : ''].filter(Boolean).join(' '); };
+    const RL = (ks, mat) => ks.map((k, i) => ({ ...rs(k), valores: mat[i] }));
+    const RH = (ks, vals) => ks.map((k, i) => ({ ...rs(k), valor: vals[i] }));
+    const RC = (ks, mat) => ks.map((k, i) => ({ ...rs(k), partes: mat[i] }));
+    const REAL = (ks, d, extra) => ({ ...d, real: true, fonte: d.fonte + ', via ' + PAL, nota: [extra, falta(ks)].filter(Boolean).join(' ') });
+    const A13 = anos(2013, 2024), A10 = anos(2010, 2023);
+
+    const secoes = [
+      { id: 'crescimento', titulo: 'Dinâmica econômica', pergunta: 'Quanto a economia cresceu e quanto ela depende da indústria extrativa?', graficos: [
+        G('linhas', { titulo: 'Dinâmica econômica: PIB, 2010–2023', sub: 'Índice 2010 = 100, PIB a preços correntes', fonte: 'IBGE, PIB dos Municípios', casas: 0,
+          rotulos: A10, series: L5(A10, [[100, 560], [100, 1450], [100, 260], [100, 240], [100, 230]], 11, 0.06) }, true),
+        G('linhas', { titulo: 'Participação no PIB da RI Carajás, 2010–2023', sub: '% do PIB da região', fonte: 'IBGE, PIB dos Municípios', casas: 0, unidade: '%',
+          rotulos: A10, series: [{ nome: 'Parauapebas', cor: '#2a78d6', valores: trilha(14, 52, 39, 5, 0.04) }, { nome: 'Canaã dos Carajás', cor: '#eb6834', valores: trilha(14, 6, 33, 9, 0.05) }] }),
+        G('linhas', REAL(['P', 'C', 'RIm'], { titulo: 'PIB per capita, 2010–2023', sub: 'R$ mil por habitante, preços correntes', fonte: 'IBGE, PIB dos Municípios', casas: 0, prefixo: true, unidade: 'R$ ',
+          rotulos: A10, series: RL(['P', 'C', 'RIm'], [[97.3, 131.1, 114.7, 114.4, 84.9, 58.9, 64.4, 91.1, 78.8, 110.4, 178.0, 227.4, 95.0, 98.6],
+            [79.3, 105.5, 110.2, 112.1, 86.6, 103.4, 68.7, 113.5, 197.1, 288.7, 590.6, 894.8, 208.4, 215.6], [20.2, 26.0, 25.7, 26.9, 23.0, 23.9, 23.6, 31.7, 37.7, 49.5, 80.8, 126.1, 49.9, 48.6]]) },
+          'Em 2023 os 4 mineradores somavam 98% do PIB da RI Carajás (88% em 2010).')),
+        G('composicao', { titulo: 'Valor adicionado por setor, 2023', sub: '% do valor adicionado bruto', fonte: 'IBGE, PIB dos Municípios',
+          categorias: ['Indústria extrativa', 'Transformação e construção', 'Serviços', 'Administração pública', 'Agropecuária'],
+          linhas: C5([[71, 4, 16, 7, 2], [83, 3, 9, 4, 1], [22, 8, 38, 24, 8], [26, 7, 35, 23, 9], [2, 19, 59, 14, 6]]) }, true),
+      ] },
+      { id: 'precos', titulo: 'Preços do minério e do cobre', pergunta: 'Quanto a arrecadação local depende dos preços internacionais das commodities?', graficos: [
+        G('linhas', { titulo: 'Preço do minério de ferro, 1985–2025', sub: 'US$ por tonelada, média anual', fonte: 'Banco Mundial (Pink Sheet)', casas: 0, prefixo: true, unidade: 'US$ ',
+          rotulos: anos(1985, 2025), series: [{ nome: 'Minério de ferro', cor: '#8a6d4b', valores: curva(1985, 2025, { 1985: 25, 2003: 32, 2008: 140, 2011: 168, 2015: 56, 2019: 94, 2021: 160, 2023: 120, 2025: 102 }, 3) }] }, true),
+        G('linhas', { titulo: 'Preço do cobre, 2000–2026', sub: 'US$ por tonelada, média anual', fonte: 'Banco Mundial (Pink Sheet)', casas: 0, prefixo: true, unidade: 'US$ ',
+          rotulos: anos(2000, 2026), series: [{ nome: 'Cobre', cor: '#b5651d', valores: curva(2000, 2026, { 2000: 1800, 2006: 6700, 2008: 7000, 2009: 5100, 2011: 8800, 2016: 4900, 2021: 9300, 2024: 9100, 2026: 10200 }, 13) }] }),
+        G('linhas', { titulo: 'Cota municipal da CFEM, 2013–2025', sub: 'R$ milhões por ano (estimativa pela regra da ANM)', fonte: 'ANM e Observatório da CFEM', casas: 0, prefixo: true, unidade: 'R$ ',
+          rotulos: anos(2013, 2025), series: L5(anos(2013, 2025), [[160, 660], [9, 750], [25, 150], [8, 30], [0.4, 0.8]], 31, 0.18) }),
+      ] },
+      { id: 'financas', titulo: 'Finanças municipais', pergunta: 'De onde vem o dinheiro das prefeituras e quanto ele depende da CFEM?', graficos: [
+        G('composicao', { real: true, titulo: 'Composição das receitas correntes de Canaã dos Carajás, 2013–2024', sub: '% da receita corrente, valores nominais', fonte: 'Siconfi/FINBRA (DCA), elaboração LAGEM/MPPA, via ' + PAL,
+          categorias: ['CFEM', 'ICMS', 'IPTU', 'ISSQN', 'Outras'], cores: ['#0f8a72', '#b88400', '#7c914b', '#c0407a', '#8a8f96'],
+          linhas: [{ nome: '2013', partes: [13.55, 25.22, 0.27, 29.97, 30.99] }, { nome: '2014', partes: [8.0, 26.94, 0.29, 37.84, 26.93] }, { nome: '2015', partes: [7.02, 20.44, 0.4, 47.41, 24.73] }, { nome: '2016', partes: [5.67, 18.78, 0.49, 45.93, 29.13] }, { nome: '2017', partes: [15.1, 20.03, 0.49, 27.2, 37.18] }, { nome: '2018', partes: [48.7, 12.99, 0.48, 11.75, 26.08] }, { nome: '2019', partes: [63.45, 11.08, 0.36, 6.93, 18.18] }, { nome: '2020', partes: [64.24, 15.64, 0.22, 4.34, 15.57] }, { nome: '2021', partes: [65.95, 16.43, 0.26, 3.52, 13.84] }, { nome: '2022', partes: [39.85, 29.0, 0.23, 13.79, 17.13] }, { nome: '2023', partes: [31.79, 39.98, 0.27, 13.98, 13.97] }, { nome: '2024', partes: [35.45, 31.21, 0.27, 18.2, 14.87] }],
+          nota: 'A CFEM passou de 13,6% da receita corrente em 2013 para 35,5% em 2024; o IPTU nunca passou de 0,5%.' }, true),
+        G('composicao', { titulo: 'Composição das receitas correntes, 2024', sub: '% da receita corrente', fonte: 'Siconfi (DCA, Anexo I-C)',
+          categorias: ['CFEM', 'Cota-parte do ICMS', 'FPM', 'Impostos próprios', 'SUS e FUNDEB', 'Outras'],
+          linhas: C5([[38, 24, 7, 9, 13, 9], [46, 21, 6, 8, 11, 8], [9, 14, 31, 6, 28, 12], [7, 13, 33, 5, 30, 12], [0.5, 19, 18, 21, 27, 14.5]]) }),
+        G('barrasH', { real: true, titulo: 'Divisão do ICMS repassado aos municípios da RI Carajás, 2023', sub: '% do total recebido pela região', fonte: 'FAPESPA, via ' + PAL, casas: 0, unidade: '%',
+          itens: [{ nome: 'Parauapebas', cor: '#2a78d6', valor: 45 }, { nome: 'Canaã dos Carajás', cor: '#eb6834', valor: 30 }, { nome: 'Marabá', cor: '#8a8f96', valor: 19 }, { nome: 'Outros 9 municípios', cor: '#8a8f96', valor: 6 }],
+          nota: 'A RI Carajás recebe 33% de todo o ICMS repassado aos municípios do Pará.' }),
+        G('barras', REAL(['P', 'C', 'RI', 'PA'], { titulo: 'Impostos próprios, 2023', sub: 'Como proporção do PIB e da receita corrente (%)', fonte: 'Siconfi e IBGE', casas: 1, unidade: '%',
+          categorias: ['% do PIB', '% da receita corrente'], series: RL(['P', 'C', 'RI', 'PA'], [[2.8, 14], [1.5, 12], [3.5, 13], [8.7, 49]]) },
+          'PIB alto não vira arrecadação própria: os mineradores ficam muito abaixo da média do Pará.')),
+        G('linhas', REAL(['C'], { titulo: 'Peso da CFEM na receita corrente, 2013–2024', sub: '% da receita corrente', fonte: 'Siconfi/FINBRA (DCA)', casas: 0, unidade: '%',
+          rotulos: A13, series: RL(['C'], [[13.55, 8.00, 7.02, 5.67, 15.10, 48.70, 63.45, 64.24, 65.95, 39.85, 31.79, 35.45]]) })),
+      ] },
+      { id: 'gasto', titulo: 'Investimento público e despesa por função', pergunta: 'Em que as prefeituras gastam, por habitante, e quanto vira investimento?', cruzamento: true, graficos: [
+        G('composicao', { real: true, titulo: 'Canaã dos Carajás: despesa por função, 2013–2025', sub: '% da despesa total', fonte: 'Siconfi, via ' + PAL,
+          categorias: ['Administração', 'Educação', 'Saúde', 'Urbanismo', 'Demais funções'], cores: ['#b88400', '#3d6fb0', '#0f8a72', '#c0407a', '#8a8f96'],
+          linhas: [{ nome: '2013', partes: [12.23, 23.56, 23.36, 22.1, 18.75] }, { nome: '2014', partes: [19.62, 27.1, 22.49, 15.46, 15.33] }, { nome: '2015', partes: [18.51, 25.43, 25.03, 12.43, 18.6] }, { nome: '2016', partes: [16.92, 28.61, 25.92, 10.29, 18.26] }, { nome: '2017', partes: [18.9, 31.16, 26.82, 4.92, 18.2] }, { nome: '2018', partes: [33.23, 20.48, 20.96, 14.31, 11.02] }, { nome: '2019', partes: [31.79, 21.8, 20.02, 16.69, 9.7] }, { nome: '2020', partes: [27.06, 13.75, 18.29, 27.49, 13.41] }, { nome: '2021', partes: [28.18, 16.18, 22.82, 17.22, 15.6] }, { nome: '2022', partes: [7.78, 16.87, 15.85, 27.76, 31.74] }, { nome: '2023', partes: [7.96, 20.46, 14.02, 22.83, 34.73] }, { nome: '2024', partes: [4.99, 21.9, 15.47, 26.95, 30.69] }, { nome: '2025', partes: [7.31, 27.65, 22.09, 13.64, 29.31] }],
+          nota: 'Demais funções obtidas por diferença. A fonte não traz essa divisão para os outros municípios.' }, true),
+        G('linhas', { titulo: 'Urbanismo: despesa per capita (função 15), 2013–2024', sub: 'R$ por habitante', fonte: 'Siconfi (DCA, Anexo I-E)', casas: 0, prefixo: true, unidade: 'R$ ',
+          rotulos: A13, series: L5(A13, [[480, 1450], [260, 2130], [180, 410], [160, 370], [260, 520]], 51, 0.1) }),
+        G('linhas', REAL(['C', 'MIN', 'NMIN'], { titulo: 'Agricultura: despesa per capita (função 20), 2013–2024', sub: 'R$ por habitante', fonte: 'Siconfi', casas: 0, prefixo: true, unidade: 'R$ ',
+          rotulos: A13, series: RL(['C', 'MIN', 'NMIN'], [[163, 23, 14, 13, 36, 49, 222, 410, 366, 463, 411, 603], [107, 108, 61, 55, 54, 58, 132, 123, 58, 64, 72, 64], [28, 72, 79, 47, 69, 51, 54, 54, 49, 72, 74, 65]]) })),
+        G('linhas', { titulo: 'Investimentos como % da despesa total, 2013–2024', sub: 'Obras, instalações e equipamentos (grupo 4.4)', fonte: 'Siconfi (DCA, Anexo I-D)', casas: 0, unidade: '%',
+          rotulos: A13, series: L5(A13, [[9, 17], [7, 24], [6, 8], [6, 7], [7, 8]], 71, 0.15) }),
+        G('barrasH', { titulo: 'Investimento per capita, 2024', sub: 'R$ por habitante', fonte: 'Siconfi (DCA, Anexo I-D)', casas: 0, prefixo: true, unidade: 'R$ ', itens: H5([1320, 2050, 290, 250, 360]) }),
+      ] },
+    ];
+
+
+    // ---------- explorador da despesa por função e subfunção (dados fictícios até a DCA do Siconfi) ----------
+    const FUNCOES = [
+      ['01', 'Legislativa', [['031', 'Ação Legislativa'], ['032', 'Controle Externo']]],
+      ['03', 'Essencial à Justiça', [['092', 'Representação Judicial e Extrajudicial']]],
+      ['04', 'Administração', [['121', 'Planejamento e Orçamento'], ['122', 'Administração Geral'], ['123', 'Administração Financeira'], ['126', 'Tecnologia da Informação'], ['128', 'Formação de Recursos Humanos'], ['131', 'Comunicação Social']]],
+      ['06', 'Segurança Pública', [['181', 'Policiamento'], ['182', 'Defesa Civil'], ['183', 'Informação e Inteligência']]],
+      ['08', 'Assistência Social', [['241', 'Assistência ao Idoso'], ['242', 'Assistência ao Portador de Deficiência'], ['243', 'Assistência à Criança e ao Adolescente'], ['244', 'Assistência Comunitária']]],
+      ['09', 'Previdência Social', [['272', 'Previdência do Regime Estatutário']]],
+      ['10', 'Saúde', [['301', 'Atenção Básica'], ['302', 'Assistência Hospitalar e Ambulatorial'], ['303', 'Suporte Profilático e Terapêutico'], ['304', 'Vigilância Sanitária'], ['305', 'Vigilância Epidemiológica']]],
+      ['12', 'Educação', [['361', 'Ensino Fundamental'], ['365', 'Educação Infantil'], ['362', 'Ensino Médio'], ['366', 'Educação de Jovens e Adultos'], ['367', 'Educação Especial'], ['364', 'Ensino Superior']]],
+      ['13', 'Cultura', [['392', 'Difusão Cultural'], ['391', 'Patrimônio Histórico, Artístico e Arqueológico']]],
+      ['15', 'Urbanismo', [['451', 'Infraestrutura Urbana'], ['452', 'Serviços Urbanos'], ['453', 'Transportes Coletivos Urbanos']]],
+      ['16', 'Habitação', [['482', 'Habitação Urbana'], ['481', 'Habitação Rural']]],
+      ['17', 'Saneamento', [['512', 'Saneamento Básico Urbano'], ['511', 'Saneamento Básico Rural']]],
+      ['18', 'Gestão Ambiental', [['541', 'Preservação e Conservação Ambiental'], ['542', 'Controle Ambiental'], ['543', 'Recuperação de Áreas Degradadas']]],
+      ['19', 'Ciência e Tecnologia', [['571', 'Desenvolvimento Científico'], ['573', 'Difusão do Conhecimento Científico e Tecnológico']]],
+      ['20', 'Agricultura', [['606', 'Extensão Rural'], ['608', 'Promoção da Produção Agropecuária'], ['605', 'Abastecimento']]],
+      ['22', 'Indústria', [['661', 'Promoção Industrial']]],
+      ['23', 'Comércio e Serviços', [['695', 'Turismo'], ['691', 'Promoção Comercial']]],
+      ['26', 'Transporte', [['782', 'Transporte Rodoviário']]],
+      ['27', 'Desporto e Lazer', [['812', 'Desporto Comunitário'], ['813', 'Lazer'], ['811', 'Desporto de Rendimento']]],
+      ['28', 'Encargos Especiais', [['843', 'Serviço da Dívida Interna'], ['846', 'Outros Encargos Especiais']]],
+    ];
+    // palavras do dia a dia que levam à função ou subfunção certa na busca
+    const PALAVRAS = {
+      '04': 'prefeitura gestao', '122': 'prefeitura secretarias custeio', '131': 'publicidade propaganda', '126': 'informatica sistemas',
+      '06': 'guarda municipal violencia', '181': 'guarda municipal', '182': 'enchente desastre',
+      '08': 'cras creas bolsa familia', '243': 'conselho tutelar crianca', '241': 'idosos', '244': 'cras',
+      '09': 'aposentadoria pensao servidores', '10': 'sus', '301': 'posto de saude ubs postinho saude da familia psf', '302': 'hospital upa consultas exames',
+      '303': 'remedios medicamentos farmacia vacinas', '305': 'dengue malaria vacinacao covid',
+      '12': 'escola ensino', '361': 'escola fundamental merenda transporte escolar', '365': 'creche pre-escola pre escola',
+      '362': 'escola ensino medio', '366': 'eja supletivo', '364': 'faculdade universidade',
+      '13': 'cultura eventos festas', '15': 'obras cidade', '451': 'obras asfalto pavimentacao ruas pracas calcadas', '452': 'limpeza coleta de lixo iluminacao varricao',
+      '453': 'onibus transporte publico', '16': 'casas moradia', '482': 'casas populares moradia', '17': 'agua esgoto', '512': 'esgoto agua tratamento drenagem',
+      '18': 'meio ambiente', '541': 'parques floresta', '543': 'reflorestamento', '20': 'produtor rural', '606': 'assistencia tecnica produtor rural',
+      '608': 'feira agricultura familiar', '23': 'turismo comercio', '26': 'estradas vicinais pontes', '782': 'estradas vicinais pontes',
+      '27': 'esporte quadras', '812': 'quadras esporte', '28': 'dividas juros precatorios', '843': 'dividas juros emprestimos',
+    };
+    // peso de cada função na despesa e ajustes por localidade (P, C, RI, PA, BR)
+    const PESO_F = { '01': 0.03, '03': 0.006, '04': 0.13, '06': 0.012, '08': 0.035, '09': 0.05, '10': 0.22, '12': 0.24, '13': 0.01, '15': 0.12, '16': 0.008,
+      '17': 0.02, '18': 0.008, '19': 0.002, '20': 0.012, '22': 0.004, '23': 0.006, '26': 0.02, '27': 0.012, '28': 0.03 };
+    const AJUSTE = { '06': [4, 4, 1, 1.2, 1], '15': [1.4, 1.9, 0.9, 0.9, 0.8], '17': [1.3, 3, 0.6, 0.7, 1.1], '20': [0.8, 2.5, 1.1, 1, 0.8], '19': [0.5, 0.5, 0.2, 0.3, 1.2] };
+    const TOTAL_PC = [[3500, 7200], [4200, 15500], [2300, 4300], [2200, 4000], [2600, 4700]];   // R$/hab em 2013 e 2024
+    const POP = [[176, 306], [31, 90], [51, 70], [38, 44], [34, 38]];                         // mil habitantes (médias por município)
+    const ANOS_EXP = anos(2013, 2024).map(Number);
+    const r2 = (a, b) => rnd(a * 7.31 + b * 13.17 + 0.5);
+    const VAL = SER.map((s, k) => ANOS_EXP.map((ano, t) => {
+      const total = TOTAL_PC[k][0] + (TOTAL_PC[k][1] - TOTAL_PC[k][0]) * (t / (ANOS_EXP.length - 1)) * (0.9 + 0.2 * r2(k, ano));
+      const pesos = FUNCOES.map(([cod]) => PESO_F[cod] * ((AJUSTE[cod] || [1, 1, 1, 1, 1])[k]) * (0.78 + 0.44 * r2(k * 31 + Number(cod), t + 3)));
+      const soma = pesos.reduce((a, b) => a + b, 0);
+      const out = {};
+      FUNCOES.forEach(([cod, , subs], f) => {
+        const vf = total * pesos[f] / soma;
+        const w = subs.map((sb, j) => (j === 0 ? 2.4 : 1) * (0.6 + 0.8 * r2(k * 11 + Number(sb[0]), t)));
+        const sw = w.reduce((a, b) => a + b, 0);
+        subs.forEach(([sc], j) => { out[sc] = vf * w[j] / sw; });
+      });
+      return out;
+    }));
+    const explorador = { tipo: 'explorador', largo: true, dados: {
+      titulo: 'Explorador da despesa por função e subfunção', sub: 'Escolha a etapa, a medida e o ano; abra uma função para ver as subfunções e clique numa linha para ver a evolução',
+      fonte: 'Siconfi (DCA, Anexo I-E)',
+      nota: 'Lista de funções e subfunções conforme a Portaria 42/1999. Os valores ainda são fictícios: serão trocados pela despesa declarada pelos municípios na DCA do Siconfi.',
+      funcoes: FUNCOES.map(([cod, nome, subs]) => ({ cod, nome, palavras: PALAVRAS[cod] || '', subs: subs.map(([c, n]) => ({ cod: c, nome: n, palavras: PALAVRAS[c] || '' })) })),
+      anos: ANOS_EXP, pop: POP,
+      // valor por habitante de uma subfunção (ou função, somando as subfunções) numa etapa
+      valor(k, ano, cod, etapa) {
+        const t = ANOS_EXP.indexOf(ano);
+        const f = FUNCOES.find((x) => x[0] === cod);
+        const liq = f ? f[2].reduce((a, [sc]) => a + VAL[k][t][sc], 0) : VAL[k][t][cod];
+        const fator = etapa === 'empenhada' ? 1.05 + 0.07 * r2(k + 5, ano) : etapa === 'paga' ? 0.9 + 0.07 * r2(k + 9, ano) : 1;
+        return liq * fator;
+      },
+    } };
+    const temaGasto = secoes.find((s) => s.id === 'gasto');
+    if (temaGasto) {
+      temaGasto.graficos = [explorador, ...temaGasto.graficos.filter((g) => !/^Urbanismo: despesa per capita/.test(g.dados.titulo))];
+    }
+
+    return { SER, secoes };
+}
+</script>
+<script src="vendor/plotly.min.js"></script>
+<script>
+/* Observatório da CFEM — página de dimensão (estática, sem backend).
+ * Os dados ficam nesta própria página (função dadosDimensao). Gráficos interativos com Plotly
+ * (vendor/plotly.min.js); PDF gerado no navegador com jsPDF (vendor/jspdf.umd.min.js, carregado só ao baixar).
+ * Estado na URL: ?tema=educacao&sem=BR,PA&de=2010&ate=2024
+ */
+"use strict";
+(() => {
+  const { SER, secoes: SECOES } = dadosDimensao();
+  const DIM = window.DIMENSAO;                 // { id, titulo }
+  const DESC = window.DESCRICOES || {};
+  const PALETA = ["#0f8a72", "#b88400", "#c0407a", "#3d6fb0", "#8a6d4b", "#7c914b", "#8a8f96"];
+  const FONTE = "'Public Sans', system-ui, sans-serif";
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const ehAno = (x) => /^\d{4}$/.test(String(x));
+  const nd = (v) => v === null || v === undefined || Number.isNaN(v);
+  const slug = (t) => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 70);
+
+  // ============================================================================ estado (com URL)
+  const URLP = new URLSearchParams(location.search);
+  // Ano de referência dos gráficos de um ano só (barras, rankings, roscas…): do campo "ano" ou do título
+  const anoUnico = (g) => {
+    if (g.tipo === "linhas") return null;
+    if (g.tipo === "composicao" && g.dados.linhas.every((l) => ehAno(l.nome))) return null;
+    if (g.dados.ano && ehAno(g.dados.ano)) return Number(g.dados.ano);
+    const m = String(g.dados.titulo).match(/\b(19|20)\d{2}\b/g);
+    return m && m.length === 1 ? Number(m[0]) : null;
+  };
+  const ANOS = (() => {
+    const a = new Set();
+    SECOES.forEach((s) => s.graficos.forEach((g) => { const u = anoUnico(g); if (u) a.add(u); }));
+    SECOES.forEach((s) => s.graficos.forEach(({ tipo, dados: d }) => {
+      if (tipo === "linhas") d.rotulos.forEach((r) => ehAno(r) && a.add(Number(r)));
+      if (tipo === "composicao" && d.linhas.every((l) => ehAno(l.nome))) d.linhas.forEach((l) => a.add(Number(l.nome)));
+    }));
+    return [...a].sort((x, y) => x - y);
+  })();
+  const estado = {
+    tema: SECOES.some((s) => s.id === URLP.get("tema")) ? URLP.get("tema") : SECOES[0].id,
+    ativos: SER.map(([nome], k) => !(URLP.get("sem") || "").split(",").includes(String(k + 1))),
+    de: ANOS.includes(Number(URLP.get("de"))) ? Number(URLP.get("de")) : ANOS[0],
+    ate: ANOS.includes(Number(URLP.get("ate"))) ? Number(URLP.get("ate")) : ANOS[ANOS.length - 1],
+  };
+  function salvarURL() {
+    const p = new URLSearchParams();
+    if (estado.tema !== SECOES[0].id) p.set("tema", estado.tema);
+    const sem = estado.ativos.map((a, k) => (a ? null : k + 1)).filter(Boolean);
+    if (sem.length) p.set("sem", sem.join(","));
+    if (estado.de !== ANOS[0]) p.set("de", estado.de);
+    if (estado.ate !== ANOS[ANOS.length - 1]) p.set("ate", estado.ate);
+    history.replaceState(null, "", p.toString() ? `?${p}` : location.pathname);
+  }
+
+  // ============================================================================ filtros aplicados aos dados
+  const ok = (nome) => { const k = SER.findIndex((s) => s[0] === nome); return k < 0 || estado.ativos[k]; };
+  function filtrar(tipo, d) {
+    const n = { ...d };
+    if (tipo === "linhas") {
+      const dentro = d.rotulos.map((r, i) => i).filter((i) => !ehAno(d.rotulos[i]) || (Number(d.rotulos[i]) >= estado.de && Number(d.rotulos[i]) <= estado.ate));
+      const usar = dentro.length >= 2 ? dentro : d.rotulos.map((r, i) => i);
+      n.rotulos = usar.map((i) => d.rotulos[i]);
+      n.series = d.series.filter((s) => ok(s.grupo || s.nome)).map((s) => ({ ...s, valores: usar.map((i) => s.valores[i]) }));
+    } else if (d.series) n.series = d.series.filter((s) => ok(s.grupo || s.nome));
+    if (d.itens) n.itens = d.itens.filter((i) => ok(i.grupo || i.nome));
+    if (d.linhas) {
+      n.linhas = d.linhas.filter((r) => ok(r.grupo || r.nome));
+      if (n.linhas.length && n.linhas.every((r) => ehAno(r.nome))) n.linhas = n.linhas.filter((r) => Number(r.nome) >= estado.de && Number(r.nome) <= estado.ate);
+    }
+    if (d.pontos) n.pontos = d.pontos.filter((p) => !p.destaque || ok(p.rotulo));
+    return n;
+  }
+
+  // ============================================================================ formatação
+  function formatador(d, casas = d.casas ?? 0) {
+    const nf = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+    return (v) => (nd(v) ? "sem dado" : d.prefixo ? `${d.unidade || ""}${nf.format(v)}` : `${nf.format(v)}${d.unidade || ""}`);
+  }
+  const eixoValor = (d) => ({ tickprefix: d.prefixo ? d.unidade || "" : "", ticksuffix: d.prefixo ? "" : d.unidade || "", tickformat: ",~r", rangemode: "tozero" });
+
+  // ============================================================================ figuras do Plotly
+  function base(extra = {}) {
+    const eixo = { gridcolor: "#e8eae6", linecolor: "#d6d9d5", zeroline: false, tickfont: { color: "#69707a", size: 11.5 }, automargin: true };
+    const b = {
+      font: { family: FONTE, size: 12.5, color: "#464b52" }, separators: ",.", paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)",
+      margin: { l: 8, r: 16, t: 8, b: 8 }, height: 340, bargap: 0.25, bargroupgap: 0.06,
+      hoverlabel: { bgcolor: "#ffffff", bordercolor: "#d6d9d5", font: { family: FONTE, color: "#1c1e21", size: 12.5 } },
+      legend: { orientation: "h", x: 0, y: 1.02, yanchor: "bottom", font: { color: "#464b52", size: 12 } },
+      xaxis: { ...eixo }, yaxis: { ...eixo },
+    };
+    const juntar = (a, c) => { for (const [k, v] of Object.entries(c)) a[k] = v && typeof v === "object" && !Array.isArray(v) && a[k] && typeof a[k] === "object" ? juntar({ ...a[k] }, v) : v; return a; };
+    return juntar(b, extra);
+  }
+
+  function figLinhas(d) {
+    const fmt = formatador(d);
+    const x = d.rotulos.map((r) => (ehAno(r) ? Number(r) : r));
+    const data = d.series.filter((s) => s.valores.some((v) => !nd(v))).map((s) => ({
+      type: "scatter", mode: "lines+markers", name: s.nome, x, y: s.valores, connectgaps: true,
+      line: { color: s.cor, width: s.tracejado ? 2 : 2.6, dash: s.tracejado ? "dash" : "solid" }, marker: { size: x.length > 20 ? 4 : 6, color: s.cor },
+      customdata: s.valores.map(fmt), hovertemplate: `${esc(s.nome)}<br>%{x}: <b>%{customdata}</b><extra></extra>`,
+    }));
+    return { data, layout: base({ height: d.altura || 340, xaxis: ehAno(d.rotulos[0]) ? { tickformat: "d" } : { type: "category" }, yaxis: { ...eixoValor(d), rangemode: d.yMin !== undefined ? "normal" : "tozero" }, hovermode: "closest" }) };
+  }
+  function quebrar(t, max = 16) {
+    const l = [];
+    String(t).split(" ").forEach((p) => { if (l.length && (l[l.length - 1] + " " + p).length <= max) l[l.length - 1] += " " + p; else l.push(p); });
+    return l.join("<br>");
+  }
+  function figBarras(d, largura) {
+    const fmt = formatador(d);
+    const n = d.categorias.length * d.series.length;
+    const rotulos = n <= (largura < 420 ? 4 : 10);
+    const data = d.series.map((s) => ({
+      type: "bar", name: s.nome, x: d.categorias.map((c) => quebrar(c)), y: s.valores, marker: { color: s.cor },
+      text: rotulos ? s.valores.map((v) => (nd(v) ? "" : fmt(v))) : undefined, textposition: "outside", cliponaxis: false,
+      textfont: { size: 11, color: "#464b52" }, customdata: s.valores.map(fmt),
+      hovertemplate: `${esc(s.nome)}<br>%{x}: <b>%{customdata}</b><extra></extra>`,
+    }));
+    return { data, layout: base({ barmode: "group", xaxis: { type: "category", tickangle: 0 }, yaxis: eixoValor(d) }) };
+  }
+  function figBarrasH(d) {
+    const fmt = formatador(d);
+    const itens = [...d.itens].reverse();
+    const data = [{
+      type: "bar", orientation: "h", y: itens.map((i) => i.nome), x: itens.map((i) => (nd(i.valor) ? 0 : i.valor)),
+      marker: { color: itens.map((i) => i.cor) }, text: itens.map((i) => fmt(i.valor)), textposition: "outside", cliponaxis: false,
+      textfont: { size: 11.5, color: "#1c1e21" }, customdata: itens.map((i) => fmt(i.valor)), hovertemplate: "%{y}: <b>%{customdata}</b><extra></extra>",
+    }];
+    return { data, layout: base({ height: 60 + 40 * itens.length, showlegend: false, margin: { r: 80 },
+      xaxis: { ...eixoValor(d), showticklabels: false, showgrid: false }, yaxis: { type: "category" } }) };
+  }
+  function figComposicao(d) {
+    const cores = d.cores || PALETA;
+    const nf = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 });
+    const linhas = [...d.linhas].reverse().map((r) => { const soma = r.partes.reduce((a, b) => a + (b || 0), 0) || 1; return { nome: r.nome, p: r.partes.map((v) => (v / soma) * 100) }; });
+    const data = d.categorias.map((cat, k) => ({
+      type: "bar", orientation: "h", name: cat, y: linhas.map((r) => r.nome), x: linhas.map((r) => r.p[k]),
+      marker: { color: cores[k % cores.length], line: { color: "#ffffff", width: 1 } },
+      text: linhas.map((r) => (r.p[k] >= 7 ? `${nf.format(r.p[k])}%` : "")), textposition: "inside", insidetextanchor: "middle",
+      textfont: { color: "#ffffff", size: 11 }, customdata: linhas.map((r) => `${nf.format(r.p[k])}%`),
+      hovertemplate: `%{y} · ${esc(cat)}: <b>%{customdata}</b><extra></extra>`,
+    }));
+    return { data, layout: base({ barmode: "stack", height: 90 + 34 * linhas.length, bargap: 0.3, legend: { traceorder: "normal" },
+      xaxis: { range: [0, 100.5], ticksuffix: "%", dtick: 25 }, yaxis: { type: "category" } }) };
+  }
+  function figDispersao(d) {
+    const fx = formatador({ casas: d.eixoX.casas ?? 0 }), fy = formatador({ casas: d.eixoY.casas ?? 0 });
+    const outros = d.pontos.filter((p) => !p.destaque), dest = d.pontos.filter((p) => p.destaque);
+    const med = (a) => { const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
+    const q = d.quadrantes || {};
+    const qx = q.x !== undefined ? q.x : med(d.pontos.map((p) => p.x)), qy = q.y !== undefined ? q.y : med(d.pontos.map((p) => p.y));
+    const nomeOutros = (d.legenda || []).find((l) => l.nome !== "Parauapebas" && l.nome !== "Canaã dos Carajás");
+    const data = [{
+      type: "scatter", mode: "markers", name: nomeOutros ? nomeOutros.nome : "Outros municípios", x: outros.map((p) => p.x), y: outros.map((p) => p.y),
+      marker: { size: 8, color: outros[0] ? outros[0].cor : "#a3a29c", opacity: 0.75, line: { color: "#ffffff", width: 1 } },
+      text: outros.map((p) => p.rotulo), customdata: outros.map((p) => [fx(p.x), fy(p.y)]),
+      hovertemplate: "%{text}<br>" + esc(d.eixoX.titulo) + ": <b>%{customdata[0]}</b><br>" + esc(d.eixoY.titulo) + ": <b>%{customdata[1]}</b><extra></extra>",
+    }, ...dest.map((p) => ({
+      type: "scatter", mode: "markers+text", name: p.rotulo, x: [p.x], y: [p.y], text: [p.rotulo], textposition: "middle right",
+      textfont: { size: 12, color: "#1c1e21" }, marker: { size: 14, color: p.cor, line: { color: "#ffffff", width: 2 } }, cliponaxis: false,
+      customdata: [[fx(p.x), fy(p.y)]],
+      hovertemplate: "<b>%{text}</b><br>" + esc(d.eixoX.titulo) + ": <b>%{customdata[0]}</b><br>" + esc(d.eixoY.titulo) + ": <b>%{customdata[1]}</b><extra></extra>",
+    }))];
+    const linha = { type: "line", line: { color: "#8a8f96", width: 1.5, dash: "dash" } };
+    const canto = (texto, x, y, xa, ya) => ({ text: esc(texto), xref: "paper", yref: "paper", x, y, xanchor: xa, yanchor: ya, showarrow: false, font: { size: 11, color: "#69707a" } });
+    const layout = base({
+      height: 420, showlegend: true, hovermode: "closest",
+      xaxis: { title: { text: esc(d.eixoX.titulo), font: { size: 12, color: "#464b52" } }, tickformat: ",~r" },
+      yaxis: { title: { text: esc(d.eixoY.titulo), font: { size: 12, color: "#464b52" } }, tickformat: ",~r" },
+      shapes: d.quadrantes ? [{ ...linha, xref: "x", yref: "paper", x0: qx, x1: qx, y0: 0, y1: 1 }, { ...linha, xref: "paper", yref: "y", x0: 0, x1: 1, y0: qy, y1: qy }] : [],
+      annotations: d.quadrantes ? [canto(q.supEsq, 0.01, 0.99, "left", "top"), canto(q.supDir, 0.99, 0.99, "right", "top"),
+        canto(q.infEsq, 0.01, 0.01, "left", "bottom"), canto(q.infDir, 0.99, 0.01, "right", "bottom")] : [],
+    });
+    return { data, layout };
+  }
+  function figPiramide(d) {
+    const nf = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const faixas = [...d.faixas].reverse(), h = [...d.homens].reverse(), m = [...d.mulheres].reverse();
+    const max = Math.ceil(Math.max(...h, ...m) / 2) * 2;
+    const ticks = []; for (let v = -max; v <= max; v += max / 2) ticks.push(v);
+    const data = [
+      { type: "bar", orientation: "h", name: "Homens", y: faixas, x: h.map((v) => -v), marker: { color: "#3d6fb0" }, customdata: h.map((v) => `${nf.format(v)}%`), hovertemplate: "Homens, %{y}: <b>%{customdata}</b><extra></extra>" },
+      { type: "bar", orientation: "h", name: "Mulheres", y: faixas, x: m, marker: { color: "#c0407a" }, customdata: m.map((v) => `${nf.format(v)}%`), hovertemplate: "Mulheres, %{y}: <b>%{customdata}</b><extra></extra>" },
+    ];
+    return { data, layout: base({ barmode: "relative", bargap: 0.12, height: 380, yaxis: { type: "category" },
+      xaxis: { tickvals: ticks, ticktext: ticks.map((v) => `${nf.format(Math.abs(v))}%`), range: [-max * 1.05, max * 1.05] } }) };
+  }
+  function figRosca(d) {
+    const nf = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 }), np = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const total = d.classes.reduce((a, c) => a + c.ha, 0);
+    const pct = d.classes.map((c) => (c.ha / total) * 100);
+    const data = [{
+      type: "pie", hole: 0.58, sort: false, direction: "clockwise", rotation: 0,
+      labels: d.classes.map((c, k) => `<b>${nf.format(c.ha)} ha</b> (${np.format(pct[k])}%)<br>${esc(c.nome)}`),
+      values: d.classes.map((c) => c.ha), marker: { colors: d.classes.map((c) => c.cor), line: { color: "#ffffff", width: 2 } },
+      textinfo: "none", customdata: d.classes.map((c, k) => [c.nome, nf.format(c.ha), np.format(pct[k])]),
+      hovertemplate: "%{customdata[0]}<br><b>%{customdata[1]} ha</b> (%{customdata[2]}%)<extra></extra>",
+    }];
+    return { data, layout: base({ height: 470, margin: { t: 8, b: 8, l: 8, r: 8 }, showlegend: true,
+      legend: { orientation: "v", x: 0, y: -0.02, yanchor: "top", font: { size: 11.5 }, traceorder: "normal" },
+      annotations: [{ text: `<b>${esc(d.ano)}</b>`, showarrow: false, font: { size: 20, color: "#1c1e21" }, x: 0.5, y: 0.5, xref: "paper", yref: "paper" }],
+      grid: undefined }) };
+  }
+  function figMapa(d) {
+    const C = 40, L = 24;
+    const CHAVES = ["floresta", "pastagem", "agricultura", "mineracao", "urbano", "agua"];
+    const CORES = { floresta: "#2f7d4f", pastagem: "#e3c66b", agricultura: "#d9a35f", mineracao: "#8a6d4b", urbano: "#c0407a", agua: "#3d6fb0" };
+    const NOMES = { floresta: "Floresta", pastagem: "Pastagem", agricultura: "Agricultura", mineracao: "Mineração", urbano: "Área urbana", agua: "Água" };
+    const rnd = (s) => { const x = Math.sin(s * 12.9898 + (d.semente || 1) * 78.233) * 43758.5453; return x - Math.floor(x); };
+    const classe = [], livres = [];
+    for (let y = 0; y < L; y++) for (let x = 0; x < C; x++) {
+      const i = y * C + x;
+      if (Math.abs(y - (12 + 4 * Math.sin(x * 0.25))) < 0.7) { classe[i] = "agua"; continue; }
+      if (d.mineracao && Math.hypot(x - 28, (y - 7) * 1.2) < 3.2) { classe[i] = "mineracao"; continue; }
+      if (Math.hypot(x - 13, (y - 16) * 1.2) < (d.urbano || 0)) { classe[i] = "urbano"; continue; }
+      const corredor = Math.abs(y - (0.35 * x + 6)) + Math.abs(x - 14) * 0.15;
+      livres.push({ i, chave: corredor + rnd(i) * 6, agri: rnd(i + 999) > 0.78 });
+    }
+    livres.sort((a, b) => a.chave - b.chave);
+    const desmatado = Math.round(livres.length * (1 - d.floresta));
+    livres.forEach((c, k) => { classe[c.i] = k < desmatado ? (c.agri ? "agricultura" : "pastagem") : "floresta"; });
+    const cont = {}; classe.forEach((c) => { cont[c] = (cont[c] || 0) + 1; });
+    const z = [], txt = [];
+    for (let y = 0; y < L; y++) { z.push([]); txt.push([]); for (let x = 0; x < C; x++) { const c = classe[y * C + x]; z[y].push(CHAVES.indexOf(c) + 0.5); txt[y].push(NOMES[c]); } }
+    const escala = []; CHAVES.forEach((k, i) => { escala.push([i / 6, CORES[k]], [(i + 1) / 6, CORES[k]]); });
+    const nf = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
+    const presentes = CHAVES.filter((k) => cont[k]);
+    d._legenda = presentes.map((k) => ({ nome: NOMES[k], pct: (cont[k] / classe.length) * 100 }));
+    const data = [{ type: "heatmap", z, text: txt, zmin: 0, zmax: 6, colorscale: escala, showscale: false, xgap: 1, ygap: 1, hovertemplate: "%{text}<extra></extra>" },
+      ...presentes.map((k) => ({ type: "scatter", mode: "markers", x: [null], y: [null], name: `${NOMES[k]} ${nf.format((cont[k] / classe.length) * 100)}%`, marker: { size: 11, symbol: "square", color: CORES[k] }, hoverinfo: "skip" }))];
+    return { data, layout: base({ height: 360, legend: { y: -0.02, yanchor: "top" }, xaxis: { visible: false, showgrid: false }, yaxis: { visible: false, autorange: "reversed", scaleanchor: "x", showgrid: false } }) };
+  }
+  function figura(g, largura = 600) {
+    const d = filtrar(g.tipo, g.dados);
+    const f = { linhas: figLinhas, barras: figBarras, barrasH: figBarrasH, composicao: figComposicao, dispersao: figDispersao, piramide: figPiramide, mapa: figMapa, rosca: figRosca }[g.tipo](d, largura);
+    const vazio = !f.data.length || (g.tipo === "barrasH" && !d.itens.length) || (g.tipo === "composicao" && !d.linhas.length) || (g.tipo === "barras" && !d.series.length);
+    return { ...f, dados: d, vazio };
+  }
+
+  // ============================================================================ CSV e PNG de cada gráfico
+  const num = (v, casas = 4) => (nd(v) ? "" : new Intl.NumberFormat("pt-BR", { maximumFractionDigits: casas, useGrouping: false }).format(v));
+  const cel = (v) => { const s = String(v ?? ""); return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  function tabela(g) {
+    if (g.tipo === "explorador") return expCSV(g);
+    const d = filtrar(g.tipo, g.dados);
+    const un = d.unidade ? d.unidade.trim() : "";
+    let cab, linhas = [];
+    switch (g.tipo) {
+      case "linhas": cab = ["serie", "ano", "valor"]; d.series.forEach((s) => s.valores.forEach((v, i) => linhas.push([s.nome, d.rotulos[i], num(v)]))); break;
+      case "barras": cab = ["serie", "categoria", "valor"]; d.series.forEach((s) => s.valores.forEach((v, i) => linhas.push([s.nome, d.categorias[i], num(v)]))); break;
+      case "barrasH": cab = ["serie", "valor"]; d.itens.forEach((i) => linhas.push([i.nome, num(i.valor)])); break;
+      case "composicao": cab = ["linha", "categoria", "valor"]; d.linhas.forEach((r) => r.partes.forEach((v, k) => linhas.push([r.nome, d.categorias[k], num(v)]))); break;
+      case "dispersao": cab = ["municipio", d.eixoX.titulo, d.eixoY.titulo]; d.pontos.forEach((p) => linhas.push([p.rotulo, num(p.x), num(p.y)])); break;
+      case "piramide": cab = ["faixa_etaria", "homens_pct", "mulheres_pct"]; d.faixas.forEach((f, i) => linhas.push([f, num(d.homens[i]), num(d.mulheres[i])])); break;
+      case "rosca": { const t = d.classes.reduce((a, c) => a + c.ha, 0); cab = ["classe", "ano", "hectares", "percentual"]; d.classes.forEach((c) => linhas.push([c.nome, d.ano, num(c.ha, 0), num((c.ha / t) * 100, 2)])); break; }
+      case "mapa": figMapa(d); cab = ["classe", "percentual_ilustrativo"]; d._legenda.forEach((l) => linhas.push([l.nome, num(l.pct, 1)])); break;
+    }
+    cab = [...cab, "unidade", "fonte", "situacao"];
+    const extra = [un, `${d.fonte}`, g.dados.real ? "dados reais" : "dados ficticios (prototipo)"];
+    return "﻿" + [cab, ...linhas.map((l) => [...l, ...extra])].map((l) => l.map(cel).join(";")).join("\r\n");
+  }
+  function baixar(nome, conteudo, tipo) {
+    const url = conteudo instanceof Blob ? URL.createObjectURL(conteudo) : typeof conteudo === "string" && conteudo.startsWith("data:") ? conteudo : URL.createObjectURL(new Blob([conteudo], { type: tipo }));
+    const a = Object.assign(document.createElement("a"), { href: url, download: nome });
+    document.body.appendChild(a); a.click(); a.remove();
+    if (url.startsWith("blob:")) setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+  // Figura para exportar: fundo branco, título, subtítulo e fonte dentro da imagem
+  function figuraExportacao(g, comTexto) {
+    const f = figura(g, 1000);
+    const lay = JSON.parse(JSON.stringify(f.layout));
+    lay.paper_bgcolor = "#ffffff"; lay.plot_bgcolor = "#ffffff";
+    lay.width = g.tipo === "mapa" ? 760 : g.tipo === "rosca" ? 560 : 1000;
+    let h = lay.height || 340;
+    if (comTexto) {
+      lay.title = { text: `<b>${esc(g.dados.titulo)}</b>${g.dados.sub ? `<br><span style="font-size:12px;color:#69707a">${esc(g.dados.sub)}</span>` : ""}`, xref: "container", x: 0, xanchor: "left", yref: "container", y: 1, yanchor: "top", pad: { t: 18, l: 16 }, font: { size: 16, color: "#1c1e21" } };
+      lay.margin = { ...(lay.margin || {}), t: 90, b: 56, l: 16 };
+      lay.legend = { ...(lay.legend || {}), y: 1.02, yanchor: "bottom" };
+      lay.annotations = [...(lay.annotations || []), { xref: "paper", yref: "paper", x: 0, y: 0, yshift: -40, xanchor: "left", yanchor: "top", showarrow: false, align: "left",
+        text: `${g.dados.real ? "Fonte" : "Fonte prevista"}: ${esc(g.dados.fonte)} · ${g.dados.real ? "dados reais" : "dados fictícios (protótipo)"} · Observatório da CFEM`, font: { size: 11, color: "#69707a" } }];
+      h += 140;
+    } else lay.margin = { ...(lay.margin || {}), t: 24, b: 16, l: 16 };
+    lay.height = h;
+    return { data: f.data, layout: lay, largura: lay.width, altura: h };
+  }
+  async function png(g) {
+    if (g.tipo === "explorador") {
+      const f = expFigura(g), nome = expNome(g.dados, EXP.sel);
+      const h = f.layout.height + 140;
+      const lay = { ...f.layout, paper_bgcolor: "#ffffff", plot_bgcolor: "#ffffff", width: 1000, height: h, margin: { t: 90, b: 56, l: 16, r: 16 },
+        title: { text: `<b>${esc(nome)}</b><br><span style="font-size:12px;color:#69707a">${esc(ETAPAS.find((e) => e[0] === EXP.etapa)[1])} · ${esc(MEDIDAS.find((m) => m[0] === EXP.medida)[1])}</span>`,
+          xref: "container", x: 0, xanchor: "left", yref: "container", y: 1, yanchor: "top", pad: { t: 18, l: 16 }, font: { size: 16, color: "#1c1e21" } },
+        annotations: [{ xref: "paper", yref: "paper", x: 0, y: 0, yshift: -40, xanchor: "left", yanchor: "top", showarrow: false,
+          text: `Fonte prevista: ${esc(g.dados.fonte)} · dados fictícios (protótipo) · Observatório da CFEM`, font: { size: 11, color: "#69707a" } }] };
+      const url = await Plotly.toImage({ data: f.data, layout: lay }, { format: "png", width: 1000, height: h, scale: 2 });
+      return baixar(`observatorio-cfem_${DIM.id}_despesa_${slug(nome)}.png`, url);
+    }
+    const fig = figuraExportacao(g, true);
+    const url = await Plotly.toImage({ data: fig.data, layout: fig.layout }, { format: "png", width: fig.largura, height: fig.altura, scale: 2 });
+    baixar(`observatorio-cfem_${DIM.id}_${slug(g.dados.titulo)}.png`, url);
+  }
+
+  // ============================================================================ página
+  const CONFIG = (g) => ({
+    displaylogo: false, responsive: true, locale: "pt-BR",
+    modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d", "toggleSpikelines"],
+    toImageButtonOptions: { format: "png", scale: 3, filename: `observatorio-cfem_${DIM.id}_${slug(g.dados.titulo)}` },
+  });
+  let localeOk = false;
+  function locale() {
+    if (localeOk || !window.Plotly) return;
+    Plotly.register({ moduleType: "locale", name: "pt-BR", format: { decimal: ",", thousands: "." },
+      dictionary: { "Download plot as a png": "Baixar como PNG", "Zoom in": "Aproximar", "Zoom out": "Afastar", "Reset axes": "Restaurar eixos", "Pan": "Mover", "Zoom": "Zoom", "Autoscale": "Ajustar" } });
+    localeOk = true;
+  }
+  const temaAtual = () => SECOES.find((s) => s.id === estado.tema);
+  const foraDoPeriodo = (g) => { const a = anoUnico(g); return a !== null && ANOS.length > 0 && (a < estado.de || a > estado.ate); };
+  const avisoFora = (g) => `Este gráfico é de ${anoUnico(g)}, fora do período escolhido (${estado.de} a ${estado.ate}).`;
+
+  // ============================================================================ explorador da despesa por função e subfunção
+  const EXP = { etapa: "liquidada", medida: "pc", ano: null, busca: "", abertos: new Set(), sel: "12", ordem: { k: 1, desc: true }, todas: false };
+  const ETAPAS = [["empenhada", "Empenhada"], ["liquidada", "Liquidada"], ["paga", "Paga"]];
+  const MEDIDAS = [["pc", "R$ por habitante"], ["total", "R$ total (milhões)"], ["pct", "% da despesa total"]];
+  const ATALHOS = {
+    "12": ["dimensao-social.html?tema=educacao", "Ver IDEB e distorção idade-série"], "10": ["dimensao-social.html?tema=saude", "Ver indicadores de saúde"],
+    "08": ["dimensao-social.html?tema=pobreza", "Ver pobreza e CadÚnico"], "06": ["dimensao-social.html?tema=seguranca", "Ver indicadores de violência"],
+    "17": ["dimensao-ambiental.html?tema=saneamento", "Ver acesso a água e esgoto"], "18": ["dimensao-ambiental.html?tema=uso", "Ver cobertura da terra"],
+    "15": ["dimensao-social.html?tema=moradia", "Ver infraestrutura dos domicílios"], "16": ["dimensao-social.html?tema=moradia", "Ver moradia e infraestrutura"],
+    "20": ["dimensao-economica.html?tema=crescimento", "Ver dinâmica econômica"],
+  };
+  const semAcento = (t) => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const ativosK = () => SER.map((s, k) => k).filter((k) => estado.ativos[k]);
+  const expFuncao = (d, cod) => d.funcoes.find((f) => f.cod === cod || f.subs.some((s) => s.cod === cod));
+  const expNome = (d, cod) => {
+    const f = expFuncao(d, cod);
+    if (!f) return cod;
+    if (f.cod === cod) return `${f.cod} ${f.nome}`;
+    const s = f.subs.find((x) => x.cod === cod);
+    return `${f.nome} › ${s.cod} ${s.nome}`;
+  };
+  function expMedir(d, k, ano, cod, medida = EXP.medida, etapa = EXP.etapa) {
+    const pc = d.valor(k, ano, cod, etapa);
+    if (medida === "pc") return pc;
+    if (medida === "total") {
+      const t = d.anos.indexOf(ano), p = d.pop[k];
+      return (pc * (p[0] + ((p[1] - p[0]) * t) / (d.anos.length - 1)) * 1000) / 1e6;
+    }
+    return (pc / d.funcoes.reduce((a, f) => a + d.valor(k, ano, f.cod, etapa), 0)) * 100;
+  }
+  function expFmt(v, medida = EXP.medida) {
+    if (nd(v)) return "–";
+    const n = (c) => new Intl.NumberFormat("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
+    return medida === "pc" ? `R$ ${n(0).format(v)}` : medida === "total" ? `R$ ${n(v < 10 ? 2 : 1).format(v)} mi` : `${n(1).format(v)}%`;
+  }
+  // Funções visíveis (com as subfunções que casam com a busca), ordenadas pela coluna escolhida
+  function expLinhas(d) {
+    const b = semAcento(EXP.busca.trim());
+    const ks = ativosK();
+    const kOrd = EXP.ordem.k === -1 ? -1 : ks.includes(EXP.ordem.k) ? EXP.ordem.k : ks[0];
+    const val = (cod) => (kOrd === undefined || kOrd === -1 ? 0 : expMedir(d, kOrd, EXP.ano, cod));
+    const ord = (a, c) => (kOrd === -1 ? a.cod.localeCompare(c.cod) * (EXP.ordem.desc ? -1 : 1) : (val(c.cod) - val(a.cod)) * (EXP.ordem.desc ? 1 : -1));
+    let funcs = d.funcoes.map((f) => {
+      const casaF = !b || semAcento(`${f.cod} ${f.nome} ${f.palavras || ""}`).includes(b);
+      const subs = f.subs.filter((s) => !b || casaF || semAcento(`${s.cod} ${s.nome} ${s.palavras || ""}`).includes(b)).sort(ord);
+      return { f, subs, mostra: casaF || subs.length > 0, abrir: Boolean(b) && !casaF };
+    }).filter((x) => x.mostra).sort((a, c) => ord(a.f, c.f));
+    const total = funcs.length;
+    if (!b && !EXP.todas) funcs = funcs.slice(0, 12);
+    return { funcs, total, ks, kOrd, b };
+  }
+  function expFigura(g) {
+    const d = g.dados;
+    const anosP = d.anos.filter((a) => a >= estado.de && a <= estado.ate);
+    const usar = anosP.length >= 2 ? anosP : d.anos;
+    const data = ativosK().map((k) => {
+      const [nome, cor, tr] = SER[k];
+      const y = usar.map((a) => expMedir(d, k, a, EXP.sel));
+      return { type: "scatter", mode: "lines+markers", name: nome, x: usar, y, line: { color: cor, width: tr ? 2 : 2.6, dash: tr ? "dash" : "solid" },
+        marker: { size: 6, color: cor }, customdata: y.map((v) => expFmt(v)), hovertemplate: `${esc(nome)}<br>%{x}: <b>%{customdata}</b><extra></extra>` };
+    });
+    const eixo = EXP.medida === "pc" ? { tickprefix: "R$ " } : EXP.medida === "total" ? { tickprefix: "R$ ", ticksuffix: " mi" } : { ticksuffix: "%" };
+    return { data, layout: base({ height: 320, xaxis: { tickformat: "d" }, yaxis: { ...eixo, tickformat: ",~r", rangemode: "tozero" }, hovermode: "closest" }) };
+  }
+  function cartaoExplorador(g, i) {
+    const d = g.dados;
+    const desc = DESC[d.titulo] || "";
+    return `
+      <article class="cartao largo explorador" id="cartao-${i}">
+        <h3>${esc(d.titulo)}</h3>
+        <p class="sub">${esc(d.sub)}</p>
+        <div class="exp-controles" id="exp-${i}">
+          <div class="exp-segmentado" role="radiogroup" aria-label="Etapa da despesa">
+            ${ETAPAS.map(([v, r]) => `<button type="button" role="radio" data-exp-etapa="${v}" aria-checked="${v === EXP.etapa}">${r}</button>`).join("")}
+          </div>
+          <label>Medida <select data-exp="medida">${MEDIDAS.map(([v, r]) => `<option value="${v}">${r}</option>`).join("")}</select></label>
+          <label>Ano <select data-exp="ano">${[...d.anos].reverse().map((a) => `<option value="${a}">${a}</option>`).join("")}</select></label>
+          <input type="search" data-exp="busca" placeholder="Buscar função ou subfunção (ex.: creche)" aria-label="Buscar função ou subfunção" value="${esc(EXP.busca)}">
+        </div>
+        <div class="exp-rolagem"><table class="exp-tabela" id="exp-tab-${i}"></table></div>
+        <div class="exp-mais" id="exp-mais-${i}"></div>
+        <div class="exp-detalhe">
+          <div class="exp-detalhe-cab"><h4 id="exp-titulo-${i}"></h4><a class="exp-atalho" id="exp-atalho-${i}" hidden></a></div>
+          <div class="grafico" id="g-${i}" role="img" aria-label="Evolução do item escolhido"></div>
+        </div>
+        ${desc ? `<p class="descricao">${esc(desc)}</p>` : ""}
+        ${d.nota ? `<p class="nota">${esc(d.nota)}</p>` : ""}
+        <div class="rodape-cartao">
+          <span class="fonte">${d.real ? "Fonte" : "Fonte prevista"}: ${esc(d.fonte)}</span>
+          <span class="acoes">
+            <span class="selo ${d.real ? "real" : "ficticio"}">${d.real ? "Dados reais" : "Dados fictícios"}</span>
+            <button type="button" class="baixar" data-csv="${i}" title="Baixar a tabela de funções e subfunções em CSV">CSV</button>
+            <button type="button" class="baixar" data-png="${i}" title="Baixar o gráfico de evolução como imagem PNG">PNG</button>
+          </span>
+        </div>
+      </article>`;
+  }
+  function expDesenhar(g, i) {
+    const d = g.dados;
+    if (EXP.ano === null || !d.anos.includes(EXP.ano)) EXP.ano = d.anos[d.anos.length - 1];
+    const box = document.getElementById(`exp-${i}`);
+    box.querySelectorAll("[data-exp-etapa]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.expEtapa === EXP.etapa)));
+    box.querySelector('[data-exp="medida"]').value = EXP.medida;
+    box.querySelector('[data-exp="ano"]').value = EXP.ano;
+    const { funcs, total, ks, kOrd, b } = expLinhas(d);
+    const max = {};
+    ks.forEach((k) => { max[k] = Math.max(...funcs.map((x) => expMedir(d, k, EXP.ano, x.f.cod)), 1e-9); });
+    const cel = (k, cod) => {
+      const v = expMedir(d, k, EXP.ano, cod);
+      return `<td><span class="exp-valor">${expFmt(v)}</span><span class="exp-barra"><i style="width:${Math.min(100, (v / max[k]) * 100).toFixed(1)}%;background:${SER[k][1]}"></i></span></td>`;
+    };
+    const seta = (k) => (kOrd === k ? (EXP.ordem.desc ? " ↓" : " ↑") : "");
+    const aria = (k) => (kOrd === k ? ` aria-sort="${EXP.ordem.desc ? "descending" : "ascending"}"` : "");
+    const linhas = funcs.map(({ f, subs, abrir }) => {
+      const aberto = abrir || EXP.abertos.has(f.cod);
+      const linhaF = `<tr class="exp-f${EXP.sel === f.cod ? " sel" : ""}"><th scope="row"><span class="exp-nome">
+          <button type="button" class="exp-abrir" data-exp-abrir="${f.cod}" aria-expanded="${aberto}" aria-label="${aberto ? "Fechar" : "Abrir"} as subfunções de ${esc(f.nome)}">${aberto ? "▾" : "▸"}</button>
+          <button type="button" class="exp-item" data-exp-item="${f.cod}" aria-pressed="${EXP.sel === f.cod}"><span class="cod">${f.cod}</span> ${esc(f.nome)}</button></span></th>${ks.map((k) => cel(k, f.cod)).join("")}</tr>`;
+      const linhasS = aberto ? subs.map((s) => `<tr class="exp-s${EXP.sel === s.cod ? " sel" : ""}"><th scope="row">
+          <button type="button" class="exp-item" data-exp-item="${s.cod}" aria-pressed="${EXP.sel === s.cod}"><span class="cod">${s.cod}</span> ${esc(s.nome)}</button></th>${ks.map((k) => cel(k, s.cod)).join("")}</tr>`).join("") : "";
+      return linhaF + linhasS;
+    }).join("");
+    document.getElementById(`exp-tab-${i}`).innerHTML = `
+      <caption class="exp-legenda">${esc(ETAPAS.find((e) => e[0] === EXP.etapa)[1])} · ${esc(MEDIDAS.find((m) => m[0] === EXP.medida)[1])} · ${EXP.ano}</caption>
+      <thead><tr><th scope="col"${aria(-1)}><button type="button" data-exp-ordem="-1">Função / subfunção${seta(-1)}</button></th>
+        ${ks.map((k) => `<th scope="col"${aria(k)}><button type="button" data-exp-ordem="${k}"><span class="traco" style="border-top:${SER[k][2] ? "2px dashed" : "3px solid"} ${SER[k][1]}"></span>${esc(SER[k][0])}${seta(k)}</button></th>`).join("")}</tr></thead>
+      <tbody>${linhas || `<tr><td colspan="${ks.length + 1}" class="vazio">Nenhuma função ou subfunção com “${esc(EXP.busca)}”.</td></tr>`}</tbody>`;
+    document.getElementById(`exp-mais-${i}`).innerHTML = !b && total > 12
+      ? `<button type="button" class="botao-texto" data-exp-todas="1">${EXP.todas ? "Mostrar só as 12 maiores funções" : `Mostrar todas as ${total} funções`}</button>` : "";
+    // evolução do item escolhido
+    if (!expFuncao(d, EXP.sel)) EXP.sel = d.funcoes[0].cod;
+    document.getElementById(`exp-titulo-${i}`).textContent = `Evolução: ${expNome(d, EXP.sel)}`;
+    const at = ATALHOS[expFuncao(d, EXP.sel).cod], link = document.getElementById(`exp-atalho-${i}`);
+    link.hidden = !at;
+    if (at) { link.href = at[0]; link.textContent = `${at[1]} →`; }
+    const el = document.getElementById(`g-${i}`);
+    if (!ks.length) { Plotly.purge(el); el.innerHTML = '<p class="vazio">Escolha ao menos uma comparação nos filtros.</p>'; el.style.height = "auto"; return; }
+    if (el.querySelector(".vazio")) el.innerHTML = "";
+    const f = expFigura(g);
+    el.style.height = `${f.layout.height}px`;
+    Plotly.react(el, f.data, f.layout, CONFIG({ dados: { titulo: `evolucao ${expNome(d, EXP.sel)}` } }));
+  }
+  function expCSV(g) {
+    const d = g.dados, ks = ativosK();
+    const cab = ["codigo", "nivel", "funcao_ou_subfuncao", ...ks.map((k) => SER[k][0]), "etapa", "medida", "ano", "fonte", "situacao"];
+    const v = (k, cod) => num(expMedir(d, k, EXP.ano, cod), 2);
+    const extra = [EXP.etapa, MEDIDAS.find((m) => m[0] === EXP.medida)[1], EXP.ano, d.fonte, "dados ficticios (prototipo)"];
+    const linhas = [];
+    d.funcoes.forEach((f) => {
+      linhas.push([f.cod, "função", f.nome, ...ks.map((k) => v(k, f.cod)), ...extra]);
+      f.subs.forEach((s) => linhas.push([s.cod, "subfunção", `${f.nome} › ${s.nome}`, ...ks.map((k) => v(k, s.cod)), ...extra]));
+    });
+    return "﻿" + [cab, ...linhas].map((l) => l.map(cel).join(";")).join("\r\n");
+  }
+  function expRedesenhar() {
+    const i = temaAtual().graficos.findIndex((g) => g.tipo === "explorador");
+    if (i >= 0) expDesenhar(temaAtual().graficos[i], i);
+  }
+  function expEventos() {
+    const painel = $("#painel");
+    painel.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-exp-etapa],[data-exp-abrir],[data-exp-item],[data-exp-ordem],[data-exp-todas]");
+      if (!b) return;
+      let foco = null;
+      if (b.dataset.expEtapa) { EXP.etapa = b.dataset.expEtapa; foco = `[data-exp-etapa="${EXP.etapa}"]`; }
+      else if (b.dataset.expAbrir) { const c = b.dataset.expAbrir; if (EXP.abertos.has(c)) EXP.abertos.delete(c); else EXP.abertos.add(c); foco = `[data-exp-abrir="${c}"]`; }
+      else if (b.dataset.expItem) { EXP.sel = b.dataset.expItem; foco = `[data-exp-item="${EXP.sel}"]`; }
+      else if (b.dataset.expOrdem !== undefined) {
+        const k = Number(b.dataset.expOrdem);
+        EXP.ordem = EXP.ordem.k === k ? { k, desc: !EXP.ordem.desc } : { k, desc: k !== -1 };
+        foco = `[data-exp-ordem="${k}"]`;
+      } else if (b.dataset.expTodas) { EXP.todas = !EXP.todas; foco = "[data-exp-todas]"; }
+      expRedesenhar();
+      const alvo = foco && painel.querySelector(foco);
+      if (alvo) alvo.focus();
+    });
+    painel.addEventListener("change", (e) => {
+      if (e.target.matches('[data-exp="medida"]')) { EXP.medida = e.target.value; expRedesenhar(); }
+      if (e.target.matches('[data-exp="ano"]')) { EXP.ano = Number(e.target.value); expRedesenhar(); }
+    });
+    let espera;
+    painel.addEventListener("input", (e) => {
+      if (!e.target.matches('[data-exp="busca"]')) return;
+      EXP.busca = e.target.value; clearTimeout(espera); espera = setTimeout(expRedesenhar, 150);
+    });
+  }
+  // Tabela das funções no PDF (sem subfunções) + evolução do item escolhido
+  async function expPDF(g, doc, ctx) {
+    const d = g.dados, ks = ativosK();
+    const { M, W, texto, novaPagina, y: getY, setY } = ctx;
+    texto(`${ETAPAS.find((e) => e[0] === EXP.etapa)[1]} · ${MEDIDAS.find((m) => m[0] === EXP.medida)[1]} · ${EXP.ano}`, { tam: 9, cor: [70, 75, 82], entre: 2 });
+    const c0 = 62, cw = ks.length ? (W - c0) / ks.length : 0, lh = 4.6;
+    const cab = () => {
+      doc.setFont("helvetica", "bold"); doc.setFontSize(7.5); doc.setTextColor(70, 75, 82);
+      let y = getY();
+      doc.text("Função", M, y + 3);
+      const CURTO = ["Parauapebas", "Canaã", "Média RI", "Média min. PA", "Média BR"];
+      ks.forEach((k, j) => doc.text(ctx.pdfTexto(CURTO[k] || SER[k][0]), M + c0 + cw * (j + 1) - 1, y + 3, { align: "right" }));
+      doc.setDrawColor(214, 217, 213); doc.line(M, y + lh, M + W, y + lh); setY(y + lh + 1);
+    };
+    if (getY() + lh * 4 > 282) novaPagina();
+    cab();
+    const funcs = [...d.funcoes].sort((a, c) => expMedir(d, ks[0] ?? 0, EXP.ano, c.cod) - expMedir(d, ks[0] ?? 0, EXP.ano, a.cod));
+    for (const f of funcs) {
+      if (getY() + lh > 282) { novaPagina(); cab(); }
+      const y = getY();
+      doc.setFont("helvetica", "normal"); doc.setFontSize(7.5); doc.setTextColor(28, 30, 33);
+      doc.text(ctx.pdfTexto(`${f.cod} ${f.nome}`), M, y + 3);
+      ks.forEach((k, j) => doc.text(ctx.pdfTexto(expFmt(expMedir(d, k, EXP.ano, f.cod))), M + c0 + cw * (j + 1) - 1, y + 3, { align: "right" }));
+      setY(y + lh);
+    }
+    setY(getY() + 4);
+    texto(`Evolução: ${expNome(d, EXP.sel)}`, { tam: 10, negrito: true, entre: 1 });
+    if (!ks.length) return;
+    const f = expFigura(g);
+    const lay = { ...f.layout, paper_bgcolor: "#ffffff", plot_bgcolor: "#ffffff", width: 1000, margin: { t: 24, b: 16, l: 16, r: 16 } };
+    const img = await Plotly.toImage({ data: f.data, layout: lay }, { format: "jpeg", width: 1000, height: lay.height, scale: 1.6 });
+    const alt = (W * lay.height) / 1000;
+    if (getY() + alt > 282) novaPagina();
+    doc.addImage(img, "JPEG", M, getY(), W, alt, undefined, "FAST"); setY(getY() + alt + 3);
+  }
+
+
+  function montarFiltros() {
+    $("#chips").innerHTML = SER.map(([nome, cor, tr], k) => `
+      <button type="button" class="chip" data-k="${k}" aria-pressed="${estado.ativos[k]}">
+        <span class="traco" style="border-top: ${tr ? "2px dashed" : "3px solid"} ${estado.ativos[k] ? cor : "#b5b8b4"}"></span>${esc(nome)}</button>`).join("");
+    const op = ANOS.map((a) => `<option value="${a}">${a}</option>`).join("");
+    $("#ano-de").innerHTML = op; $("#ano-ate").innerHTML = op;
+    $("#ano-de").value = estado.de; $("#ano-ate").value = estado.ate;
+    $("#periodo").hidden = !ANOS.length;
+  }
+  function montarAbas() {
+    $("#abas").innerHTML = SECOES.map((s) => `<button type="button" class="aba" role="tab" id="aba-${s.id}" aria-controls="painel"
+      aria-selected="${s.id === estado.tema}" tabindex="${s.id === estado.tema ? 0 : -1}">${esc(s.titulo)}</button>`).join("");
+  }
+  function cartao(g, i) {
+    if (g.tipo === "explorador") return cartaoExplorador(g, i);
+    const d = g.dados;
+    const desc = DESC[d.titulo] || "";
+    return `
+      <article class="cartao${g.largo ? " largo" : ""}${g.span ? ` s${g.span}` : ""}" id="cartao-${i}">
+        <h3>${esc(d.titulo)}</h3>
+        ${d.sub ? `<p class="sub">${esc(d.sub)}</p>` : ""}
+        <div class="grafico" id="g-${i}" role="img" aria-label="${esc(d.titulo)}"></div>
+        ${desc ? `<p class="descricao">${esc(desc)}</p>` : ""}
+        ${d.nota ? `<p class="nota">${esc(d.nota)}</p>` : ""}
+        <div class="rodape-cartao">
+          <span class="fonte">${d.real ? "Fonte" : "Fonte prevista"}: ${esc(d.fonte)}</span>
+          <span class="acoes">
+            <span class="selo ${d.real ? "real" : "ficticio"}">${d.real ? "Dados reais" : "Dados fictícios"}</span>
+            <button type="button" class="baixar" data-csv="${i}" title="Baixar os dados deste gráfico em CSV">CSV</button>
+            <button type="button" class="baixar" data-png="${i}" title="Baixar este gráfico como imagem PNG">PNG</button>
+          </span>
+        </div>
+      </article>`;
+  }
+  function montarPainel() {
+    const t = temaAtual();
+    $("#painel").setAttribute("aria-labelledby", `aba-${t.id}`);
+    $("#painel").innerHTML = `
+      <div class="cabeca-tema">
+        <div><h2>${esc(t.titulo)}</h2><p>${esc(t.pergunta)}</p></div>
+        ${t.cruzamento ? '<span class="selo-cruzamento">Gasto × resultado</span>' : ""}
+      </div>
+      <div class="grade">${t.graficos.map(cartao).join("")}</div>`;
+    desenharGraficos();
+  }
+  function desenharGraficos() {
+    locale();
+    temaAtual().graficos.forEach((g, i) => {
+      const el = document.getElementById(`g-${i}`);
+      if (!window.Plotly) { el.innerHTML = '<p class="vazio">A biblioteca de gráficos (vendor/plotly.min.js) não carregou.</p>'; return; }
+      if (g.tipo === "explorador") { expDesenhar(g, i); return; }
+      if (foraDoPeriodo(g)) { Plotly.purge(el); el.innerHTML = `<p class="vazio">${esc(avisoFora(g))}</p>`; el.style.height = "auto"; return; }
+      const f = figura(g, el.clientWidth || 600);
+      if (f.vazio) { Plotly.purge(el); el.innerHTML = '<p class="vazio">Nenhuma das comparações selecionadas tem dado neste gráfico.</p>'; el.style.height = "auto"; return; }
+      if (el.querySelector(".vazio")) el.innerHTML = "";
+      el.style.height = `${f.layout.height}px`;
+      Plotly.react(el, f.data, f.layout, CONFIG(g));
+    });
+  }
+
+  // ============================================================================ PDF da dimensão inteira
+  const carregar = (src) => new Promise((ok, erro) => {
+    if (document.querySelector(`script[src="${src}"]`)) return ok();
+    const s = Object.assign(document.createElement("script"), { src, onload: ok, onerror: () => erro(new Error(`não carregou ${src}`)) });
+    document.head.appendChild(s);
+  });
+  // A fonte padrão do PDF só tem os caracteres latinos básicos
+  const pdfTexto = (t) => String(t ?? "").replace(/[–—]/g, "-").replace(/[“”]/g, '"').replace(/[‘’]/g, "'").replace(/…/g, "...").replace(/→/g, "->").replace(/›/g, ">")
+    .replace(/≥/g, ">=").replace(/≤/g, "<=").replace(/[^\u0000-ÿ]/g, "");
+  async function gerarPDF() {
+    const botao = $("#baixar-pdf");
+    const rotulo = botao.textContent;
+    botao.disabled = true;
+    try {
+      await carregar("vendor/jspdf.umd.min.js");
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: "mm", format: "a4", compress: true });
+      const M = 15, W = 180, BASE = 282;
+      let y = M;
+      const texto = (t, { tam = 9.5, cor = [28, 30, 33], negrito = false, entre = 1.5 } = {}) => {
+        doc.setFont("helvetica", negrito ? "bold" : "normal"); doc.setFontSize(tam); doc.setTextColor(...cor);
+        const linhas = doc.splitTextToSize(pdfTexto(t), W);
+        const alt = linhas.length * tam * 0.3528 * 1.25;
+        if (y + alt > BASE) { doc.addPage(); y = M; }
+        doc.text(linhas, M, y + tam * 0.3528); y += alt + entre;
+      };
+      const altura = (t, tam) => { doc.setFontSize(tam); return doc.splitTextToSize(pdfTexto(t), W).length * tam * 0.3528 * 1.25 + 1.5; };
+      // capa
+      texto("Observatório da CFEM", { tam: 11, cor: [35, 122, 90], negrito: true });
+      texto(`Dimensão ${DIM.titulo}`, { tam: 22, negrito: true, entre: 3 });
+      texto($("#descricao-dimensao") ? $("#descricao-dimensao").textContent : "", { tam: 10.5, cor: [70, 75, 82], entre: 4 });
+      const comp = SER.filter((s, k) => estado.ativos[k]).map((s) => s[0]).join(", ") || "nenhuma";
+      texto(`Comparações: ${comp}.`, { tam: 9.5, cor: [70, 75, 82] });
+      if (ANOS.length) texto(`Período: ${estado.de} a ${estado.ate}.`, { tam: 9.5, cor: [70, 75, 82] });
+      texto(`Gerado em ${new Date().toLocaleString("pt-BR", { dateStyle: "long", timeStyle: "short" })} a partir de ${location.href}`, { tam: 8.5, cor: [105, 112, 122], entre: 4 });
+      texto("Protótipo: os gráficos marcados como \"dados reais\" usam os números da palestra de indicadores do LAGEM/UFPA (Curso Canaã, setembro de 2026); os demais são fictícios e só mostram o formato.", { tam: 9, cor: [122, 84, 0], entre: 6 });
+      const total = SECOES.reduce((a, s) => a + s.graficos.length, 0);
+      let n = 0;
+      for (const [ti, t] of SECOES.entries()) {
+        if (ti > 0) { doc.addPage(); y = M; }
+        texto(t.titulo, { tam: 16, negrito: true, entre: 1 });
+        texto(t.pergunta, { tam: 10, cor: [70, 75, 82], entre: 5 });
+        for (const g of t.graficos) {
+          n += 1; botao.textContent = `Gerando PDF… ${n}/${total}`;
+          const d = g.dados;
+          if (g.tipo === "explorador") {
+            if (y + 60 > BASE) { doc.addPage(); y = M; }
+            texto(d.titulo, { tam: 11.5, negrito: true, entre: 0.5 });
+            await expPDF(g, doc, { M, W, texto, pdfTexto, novaPagina: () => { doc.addPage(); y = M; }, y: () => y, setY: (v) => { y = v; } });
+            if (DESC[d.titulo]) texto(DESC[d.titulo], { tam: 9 });
+            if (d.nota) texto(d.nota, { tam: 8.5, cor: [105, 112, 122] });
+            texto(`Fonte prevista: ${d.fonte} · dados fictícios (protótipo)`, { tam: 8.5, cor: [70, 75, 82], entre: 7 });
+            continue;
+          }
+          const f = figuraExportacao(g, false);
+          const fora = foraDoPeriodo(g);
+          const vazio = fora || figura(g).vazio;
+          const img = vazio ? null : await Plotly.toImage({ data: f.data, layout: f.layout }, { format: "jpeg", width: f.largura, height: f.altura, scale: 1.6 });
+          const larg = g.tipo === "mapa" ? W * 0.76 : g.tipo === "rosca" ? W * 0.5 : W, alt = vazio ? 0 : (larg * f.altura) / f.largura;
+          const precisa = altura(d.titulo, 11.5) + (d.sub ? altura(d.sub, 8.5) : 0) + alt + 4 + altura(DESC[d.titulo] || "", 9);
+          if (y + Math.min(precisa, BASE - M) > BASE) { doc.addPage(); y = M; }
+          texto(d.titulo, { tam: 11.5, negrito: true, entre: 0.5 });
+          if (d.sub) texto(d.sub, { tam: 8.5, cor: [105, 112, 122], entre: 2 });
+          if (img) { if (y + alt > BASE) { doc.addPage(); y = M; } doc.addImage(img, "JPEG", M, y, larg, alt, undefined, "FAST"); y += alt + 3; }
+          else texto(fora ? avisoFora(g) : "Nenhuma das comparações selecionadas tem dado neste gráfico.", { tam: 9, cor: [105, 112, 122] });
+          if (DESC[d.titulo]) texto(DESC[d.titulo], { tam: 9 });
+          if (d.nota) texto(d.nota, { tam: 8.5, cor: [105, 112, 122] });
+          texto(`${d.real ? "Fonte" : "Fonte prevista"}: ${d.fonte} · ${d.real ? "dados reais" : "dados fictícios (protótipo)"}`, { tam: 8.5, cor: [70, 75, 82], entre: 7 });
+        }
+      }
+      const paginas = doc.getNumberOfPages();
+      for (let p = 1; p <= paginas; p++) {
+        doc.setPage(p); doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(105, 112, 122);
+        doc.text(pdfTexto(`Observatório da CFEM · Dimensão ${DIM.titulo}`), M, 291);
+        doc.text(`${p} / ${paginas}`, M + W, 291, { align: "right" });
+      }
+      doc.save(`observatorio-cfem_dimensao-${DIM.id}.pdf`);
+    } catch (e) {
+      alertar(`Não foi possível gerar o PDF: ${e.message}`);
+    } finally {
+      botao.disabled = false; botao.textContent = rotulo;
+    }
+  }
+  function alertar(msg) { const a = $("#aviso"); a.textContent = msg; a.hidden = false; setTimeout(() => { a.hidden = true; }, 8000); }
+
+  // ============================================================================ eventos
+  function escolher(id, focar) {
+    estado.tema = id; montarAbas(); montarPainel(); salvarURL();
+    if (focar) document.getElementById(`aba-${id}`).focus();
+  }
+  function ligar() {
+    $("#abas").addEventListener("click", (e) => { const b = e.target.closest(".aba"); if (b) escolher(b.id.slice(4)); });
+    $("#abas").addEventListener("keydown", (e) => {
+      const ids = SECOES.map((s) => s.id), i = ids.indexOf(estado.tema);
+      const novo = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: ids.length - 1 }[e.key];
+      if (novo === undefined) return;
+      e.preventDefault(); escolher(ids[(novo + ids.length) % ids.length], true);
+    });
+    $("#chips").addEventListener("click", (e) => {
+      const b = e.target.closest(".chip"); if (!b) return;
+      const k = Number(b.dataset.k); estado.ativos[k] = !estado.ativos[k];
+      montarFiltros(); $(`.chip[data-k="${k}"]`).focus(); desenharGraficos(); salvarURL();
+    });
+    $("#ano-de").addEventListener("change", (e) => { estado.de = Number(e.target.value); if (estado.ate < estado.de) estado.ate = estado.de; montarFiltros(); desenharGraficos(); salvarURL(); });
+    $("#ano-ate").addEventListener("change", (e) => { estado.ate = Number(e.target.value); if (estado.de > estado.ate) estado.de = estado.ate; montarFiltros(); desenharGraficos(); salvarURL(); });
+    $("#restaurar").addEventListener("click", () => { estado.ativos = SER.map(() => true); estado.de = ANOS[0]; estado.ate = ANOS[ANOS.length - 1]; montarFiltros(); desenharGraficos(); salvarURL(); });
+    $("#baixar-pdf").addEventListener("click", gerarPDF);
+    expEventos();
+    $("#painel").addEventListener("click", async (e) => {
+      const b = e.target.closest("button.baixar"); if (!b) return;
+      const g = temaAtual().graficos[Number(b.dataset.csv ?? b.dataset.png)];
+      try {
+        if (b.dataset.csv !== undefined) baixar(`observatorio-cfem_${DIM.id}_${slug(g.dados.titulo)}.csv`, tabela(g), "text/csv;charset=utf-8");
+        else await png(g);
+      } catch (erro) { alertar(`Não foi possível baixar: ${erro.message}`); }
+    });
+  }
+
+  function iniciar() { montarFiltros(); montarAbas(); montarPainel(); ligar(); salvarURL(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();
+})();
+
+</script>
+</body>
+</html>
