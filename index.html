@@ -277,6 +277,16 @@
   .vale-logo { flex: none; text-align: center; position: relative; z-index: 1; }
   .vale-logo img { height: 60px; width: auto; display: block; margin: 0 auto 10px; }
   .vale-logo span { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  /* faixa com a foto da mineração atrás do cartão da Vale: a foto se move mais devagar que a página (parallax) */
+  .faixa-mineracao { position: relative; overflow: hidden; background: #2d332f; isolation: isolate; }
+  .faixa-mineracao-fundo { position: absolute; left: 0; right: 0; top: -16%; bottom: -16%; z-index: -2; will-change: transform; transform: translate3d(0, 0, 0) scale(1.06); }
+  .faixa-mineracao-fundo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .faixa-mineracao::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(16,22,19,.55) 0%, rgba(16,22,19,.25) 50%, rgba(16,22,19,.55) 100%); }
+  .faixa-mineracao-conteudo { padding-top: 120px; padding-bottom: 120px; }
+  .faixa-mineracao .vale { background: rgba(232,244,239,.93); border-color: rgba(255,255,255,.6); box-shadow: 0 24px 60px rgba(0,0,0,.28);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  @media (max-width: 760px) { .faixa-mineracao-conteudo { padding-top: 72px; padding-bottom: 72px; } }
 
   /* municípios */
   .municipios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
@@ -749,7 +759,9 @@
 </section>
 
 <!-- ============================== Vale ============================== -->
-<section class="conteiner revelar" aria-label="Apoio" style="padding-top: 88px; padding-bottom: 88px">
+<section class="faixa-mineracao" aria-label="Apoio">
+  <div class="faixa-mineracao-fundo" aria-hidden="true"><img src="mineracao.jpg" alt="" loading="lazy" decoding="async"></div>
+  <div class="conteiner revelar faixa-mineracao-conteudo">
   <div class="vale">
     <div class="vale-texto">
       <small>Iniciativa apoiada por</small>
@@ -759,6 +771,7 @@
       <img src="Logotipo_Vale.svg.png" alt="Vale">
       <span>Parceiro estratégico</span>
     </div>
+  </div>
   </div>
 </section>
 
@@ -1269,6 +1282,25 @@ $("#ia-form").addEventListener("submit", (e) => {
   if (!t) return;
   campo.value = ""; perguntar(t);
 });
+
+// ---------- faixa da mineração: a foto anda mais devagar que a rolagem e aproxima de leve (parallax)
+(() => {
+  const faixa = document.querySelector(".faixa-mineracao");
+  if (!faixa || semMovimento) return;
+  const fundo = faixa.querySelector(".faixa-mineracao-fundo");
+  let pedido = false;
+  const mover = () => {
+    pedido = false;
+    const r = faixa.getBoundingClientRect(), vh = window.innerHeight;
+    if (r.bottom < -100 || r.top > vh + 100) return;
+    const p = Math.max(-1, Math.min(1, (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2)));   // -1 (saindo por cima) a 1 (entrando por baixo)
+    fundo.style.transform = `translate3d(0, ${(p * 9).toFixed(2)}%, 0) scale(${(1.06 + 0.06 * Math.abs(p)).toFixed(3)})`;
+  };
+  const pedir = () => { if (!pedido) { pedido = true; requestAnimationFrame(mover); } };
+  window.addEventListener("scroll", pedir, { passive: true });
+  window.addEventListener("resize", pedir);
+  mover();
+})();
 </script>
 </body>
 </html>
