@@ -328,6 +328,9 @@
   .realizacao img { width: auto; max-width: none; display: block; object-fit: contain; }
   .realizacao .logo-vale { height: 40px; margin: 16px 0; }      /* mesma altura visual do brasão (72px) */
   .realizacao .logo-ufpa { height: 72px; }
+  .realizacao .logo-lagem, .realizacao .logo-lamem { height: 80px; }   /* têm texto pequeno embaixo: um pouco maiores */
+  .realizacao .logo-labes { height: 44px; }
+  .realizacao .logos { display: flex; align-items: center; gap: 16px 32px; flex-wrap: wrap; }
   .realizacao .divisor { width: 1px; height: 80px; background: var(--rule); }
   .rodape { background: var(--marca); color: #fff; padding-bottom: 96px; }   /* espaço para o botão do assistente não cobrir o rodapé */
   .rodape .conteiner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-top: 28px; padding-bottom: 28px; }
@@ -542,10 +545,10 @@
       Apoiado pela Vale · PEA · Parauapebas · Canaã dos Carajás
     </div>
     <h1 class="hero-h1">
-      Participe.<br><span class="hl-gold">Acompanhe.</span> Transforme.
+      Participe.<br><span class="hl-gold">Fiscalize.</span> Transforme.
     </h1>
     <p class="hero-lead">
-      O Observatório da CFEM é uma plataforma digital dedicada a monitorar, analisar e tornar públicos os recursos da Compensação Financeira pela Exploração de Recursos Minerais nos municípios de Parauapebas e Canaã dos Carajás.
+      O Observatório da CFEM é uma plataforma digital dedicada a monitorar, analisar e tornar públicos os recursos da Compensação Financeira pela Exploração Mineral nos municípios de Parauapebas e Canaã dos Carajás.
     </p>
     <div class="hero-btns">
       <a href="https://obcefem-api.vercel.app/" class="btn-pill">Explorar a plataforma</a>
@@ -565,7 +568,7 @@
   <div class="conteiner">
     <div class="cabeca revelar">
       <div class="sobrelinha">Siga o dinheiro</div>
-      <h2 id="titulo-dinheiro">Do recurso mineral aos recursos financeiros</h2>
+      <h2 id="titulo-dinheiro">Do minério ao município: para onde vai e no que vira a CFEM</h2>
       <p class="lead">O Observatório acompanha o dinheiro da mineração em cinco degraus: quanto foi arrecadado, quanto deveria chegar às prefeituras, quanto chegou, onde foi gasto e o que mudou no município.</p>
     </div>
     <ol class="cadeia">
@@ -886,7 +889,15 @@
   <div class="conteiner">
     <figure><figcaption>Realização</figcaption><img class="logo-vale" src="Logotipo_Vale.svg.png" alt="Vale" width="1280" height="500"></figure>
     <span class="divisor" aria-hidden="true"></span>
-    <figure><figcaption>Execução</figcaption><img class="logo-ufpa" src="Brasao-UFPA-colorido.png" alt="Universidade Federal do Pará" width="298" height="420"></figure>
+    <figure>
+      <figcaption>Execução</figcaption>
+      <div class="logos">
+        <img class="logo-ufpa" src="Brasao-UFPA-colorido.png" alt="Universidade Federal do Pará" width="298" height="420">
+        <img class="logo-lagem" src="logo-lagem.png" alt="LAGEM: Laboratório de Estudos em Governança de Municípios Mineradores, UFPA" width="176" height="200">
+        <img class="logo-lamem" src="logo-lamem.png" alt="LAMEM: Laboratório de Modelagem Estatístico-Matemático" width="170" height="200">
+        <img class="logo-labes" src="logo-labes.png" alt="LABES: Laboratório de Engenharia de Software" width="270" height="120">
+      </div>
+    </figure>
   </div>
 </section>
 
