@@ -323,9 +323,11 @@
   /* realização e rodapé */
   .realizacao { background: var(--surface-2); border-top: 1px solid var(--rule); }
   .realizacao .conteiner { display: flex; align-items: center; gap: 56px; padding-top: 32px; padding-bottom: 32px; flex-wrap: wrap; }
-  .realizacao figure { display: flex; flex-direction: column; gap: 10px; }
+  .realizacao figure { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }   /* flex-start: sem isso a imagem estica na largura e a logo fica achatada */
   .realizacao figcaption { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-  .realizacao img { height: 68px; width: auto; display: block; }
+  .realizacao img { width: auto; max-width: none; display: block; object-fit: contain; }
+  .realizacao .logo-vale { height: 40px; margin: 16px 0; }      /* mesma altura visual do brasão (72px) */
+  .realizacao .logo-ufpa { height: 72px; }
   .realizacao .divisor { width: 1px; height: 80px; background: var(--rule); }
   .rodape { background: var(--marca); color: #fff; padding-bottom: 96px; }   /* espaço para o botão do assistente não cobrir o rodapé */
   .rodape .conteiner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-top: 28px; padding-bottom: 28px; }
@@ -882,9 +884,9 @@
 <!-- ============================== Realização e rodapé ============================== -->
 <section class="realizacao" aria-label="Realização e execução">
   <div class="conteiner">
-    <figure><figcaption>Realização</figcaption><img src="Logotipo_Vale.svg.png" alt="Vale"></figure>
+    <figure><figcaption>Realização</figcaption><img class="logo-vale" src="Logotipo_Vale.svg.png" alt="Vale" width="1280" height="500"></figure>
     <span class="divisor" aria-hidden="true"></span>
-    <figure><figcaption>Execução</figcaption><img src="Brasao-UFPA-colorido.png" alt="Universidade Federal do Pará"></figure>
+    <figure><figcaption>Execução</figcaption><img class="logo-ufpa" src="Brasao-UFPA-colorido.png" alt="Universidade Federal do Pará" width="298" height="420"></figure>
   </div>
 </section>
 
