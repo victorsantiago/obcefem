@@ -492,7 +492,7 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div class="submenu" id="sub-dimensoes" hidden>
-            <p class="submenu-desc">Gasto e resultado em quatro grandes eixos</p>
+            <p class="submenu-desc">Gasto e resultado em quatro grandes dimensões</p>
             <a class="sub-item" href="dimensao-social.html"><span><b>Social</b><small>Emprego e renda, saúde, educação, pobreza, segurança</small></span><span class="selo breve">Protótipo</span></a>
             <a class="sub-item" href="dimensao-economica.html"><span><b>Econômica</b><small>Atividades produtivas, PIB, finanças municipais, investimento</small></span><span class="selo breve">Protótipo</span></a>
             <a class="sub-item" href="dimensao-ambiental.html"><span><b>Ambiental</b><small>Uso do território, emissões, saneamento, vegetação, resíduos</small></span><span class="selo breve">Protótipo</span></a>
@@ -569,7 +569,7 @@
     </div>
     <div class="stats">
       <div class="stat"><span class="stat-val">11+</span><span class="stat-label">Objetivos estratégicos</span></div>
-      <div class="stat"><span class="stat-val gold">4</span><span class="stat-label">Eixos de análise</span></div>
+      <div class="stat"><span class="stat-val gold">4</span><span class="stat-label">Dimensões de análise</span></div>
       <div class="stat"><span class="stat-val">2</span><span class="stat-label">Municípios monitorados</span></div>
       <div class="stat"><span class="stat-val gold">IA</span><span class="stat-label">Assistente para conversar<br>com os dados</span></div>
     </div>
@@ -621,9 +621,9 @@
         <div class="degrau-topo"><span class="degrau-n">5</span><span class="selo breve">Protótipo</span></div>
         <small>O que mudou no município?</small>
         <h3>Resultados</h3>
-        <span class="valor">4 eixos</span>
+        <span class="valor">4 dimensões</span>
         <p>Indicadores sociais, econômicos, ambientais e institucionais</p>
-        <a href="#dimensoes">Conhecer os eixos →</a>
+        <a href="#dimensoes">Conhecer as dimensões →</a>
       </li>
     </ol>
   </div>
@@ -675,8 +675,8 @@
   <div class="conteiner">
     <div class="cabeca revelar">
       <div class="sobrelinha">Dimensões de análise</div>
-      <h2 id="titulo-dimensoes">Quatro eixos para avaliar o desenvolvimento municipal</h2>
-      <p class="lead">Cada eixo vai cruzar o gasto das prefeituras por função e subfunção (Siconfi) com indicadores de resultado, a partir da cota da CFEM que deveria chegar a cada município.</p>
+      <h2 id="titulo-dimensoes">Quatro dimensões para avaliar o desenvolvimento municipal</h2>
+      <p class="lead">Cada dimensão vai cruzar o gasto das prefeituras por função e subfunção (Siconfi) com indicadores de resultado, a partir da cota da CFEM que deveria chegar a cada município.</p>
     </div>
     <div class="eixos">
       <article class="eixo social revelar">
@@ -1270,7 +1270,7 @@ function resposta(t) {
   if (t.includes("cfem") || t.includes("o que é"))
     return "A <b>CFEM</b> (Compensação Financeira pela Exploração de Recursos Minerais) é paga pelas mineradoras sobre a venda dos minérios. O dinheiro é repartido entre o município produtor, o estado, os municípios afetados e a União, e não pode pagar dívidas nem o quadro permanente de pessoal.";
   if (t.includes("social") || t.includes("indicador") || t.includes("saúde") || t.includes("educa"))
-    return "Os indicadores do eixo Social (emprego e renda, saúde, educação, pobreza e segurança) estão em construção. Eles vão cruzar o gasto das prefeituras por função, declarado no Siconfi, com indicadores de resultado.";
+    return "Os indicadores da dimensão Social (emprego e renda, saúde, educação, pobreza e segurança) estão em construção. Eles vão cruzar o gasto das prefeituras por função, declarado no Siconfi, com indicadores de resultado.";
   return "Esta é uma versão de demonstração com respostas prontas sobre arrecadação, distribuição e os dois municípios. Em breve o assistente consultará a base completa do Observatório.";
 }
 function perguntar(texto) {
